@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/login"
-        android:id="@+id/login_txt"
+        android:text="@string/register"
+        android:id="@+id/register_txt"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="40dp"
@@ -23,10 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/existing_user"
-        android:id="@+id/existUser_txt"
+        android:text="@string/user_name"
+        android:id="@+id/userName_txt_reg"
         android:textSize="30dp"
-        android:layout_below="@+id/login_txt"
+        android:layout_below="@+id/register_txt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="44dp" />
@@ -34,62 +34,73 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/user_name"
-        android:id="@+id/userName"
+        android:id="@+id/userName_reg"
         android:textSize="20dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/existUser_txt" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:id="@+id/password"
-        android:hint="@string/password"
-        android:textSize="20dp"
-        android:layout_below="@+id/userName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/userName"
-        android:layout_alignEnd="@+id/userName" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in"
-        android:id="@+id/singIn_btn"
-        android:layout_below="@+id/password"
-        android:textSize="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password" />
+        android:layout_below="@+id/userName_txt_reg" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/first_time"
-        android:id="@+id/firstTime"
+        android:text="@string/password"
+        android:id="@+id/password_reg"
         android:textSize="30dp"
-        android:layout_marginTop="42dp"
-        android:layout_below="@+id/singIn_btn"
+        android:layout_below="@+id/userName_txt_reg"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="44dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/password_txt_reg"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/password_reg"
+        android:inputType="textPassword"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/re_password"
+        android:id="@+id/rePassword_reg"
+        android:textSize="30dp"
+        android:layout_below="@+id/password_reg"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="44dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rePassword_txt_reg"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rePassword_reg"
+        android:inputType="textPassword" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
-        android:id="@+id/singUp_btn"
+        android:id="@+id/singUp_btn_reg"
         android:textSize="20dp"
-        android:layout_below="@+id/firstTime"
-        android:layout_alignRight="@+id/singIn_btn"
-        android:layout_alignEnd="@+id/singIn_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/rePassword_txt_reg"
+        android:layout_alignLeft="@+id/register_txt"
+        android:layout_alignStart="@+id/register_txt"
+        android:layout_marginTop="58dp"
+        android:layout_alignRight="@+id/register_txt"
+        android:layout_alignEnd="@+id/register_txt" />
 
 </RelativeLayout>
