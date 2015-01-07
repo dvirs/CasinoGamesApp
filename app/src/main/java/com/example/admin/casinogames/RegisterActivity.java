@@ -1,6 +1,5 @@
 package com.example.admin.casinogames;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 public class RegisterActivity extends Activity {
+
+    private final int MIN_LEN = 6;
+
     private EditText firstPassword;
     private EditText secondPassword;
     private EditText userName;
@@ -33,34 +34,60 @@ public class RegisterActivity extends Activity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String msg;
                 String user = userName.getText().toString();
                 String emailStr = email.getText().toString();
                 String firstPass = firstPassword.getText().toString();
                 String secondPass = secondPassword.getText().toString();
-                if(!isValidEmail(emailStr)) {
-                    Toast.makeText(RegisterActivity.this, "Email not Valid", Toast.LENGTH_SHORT).show();
-                    firstPassword.setText("");
-                    secondPassword.setText("");
-                }
-                if(!firstPass.equals(secondPass) || firstPass.equals("")){
-                    Toast.makeText(RegisterActivity.this,"The Passwords Dont Match",Toast.LENGTH_LONG).show();
-                    firstPassword.setText("");
-                    secondPassword.setText("");
 
-                }else{
-                    Toast.makeText(RegisterActivity.this,"Loading...",Toast.LENGTH_LONG).show();
-                    signUp.setClickable(false);
-                    signUp.setFocusable(false);
-                }
+                msg = validations(emailStr, firstPass, secondPass);
+                Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
+
             }
         });
-
-
-    }
-    private static boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
+    private String validations(String email, String password, String rePassword) {
+        String msg = "";
+        msg += isValidEmail(email);
+        msg += isValidPassword(password, rePassword);
+        if(msg.equals("")) {
+            msg += "Loading...";
+        }
+        return msg;
+    }
+
+    private String isValidEmail(CharSequence target) {
+        if(!TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()){
+            return "";
+        }
+        else {
+            email.setText("");
+            firstPassword.setText("");
+            secondPassword.setText("");
+            return "Email not Valid ";
+        }
+    }
+
+    private String isValidPassword(String password, String rePassword) {
+        if(!password.equals(rePassword) || password.equals("")){
+            firstPassword.setText("");
+            secondPassword.setText("");
+            return "The Passwords Don't Match ";
+        }
+        else if(password.length() < MIN_LEN) {
+            firstPassword.setText("");
+            secondPassword.setText("");
+            return "Password must be at least six characters";
+        }
+        else if(!password.matches(".*\\d.*") || !password.matches(".*[a-z]")) {
+            firstPassword.setText("");
+            secondPassword.setText("");
+            return "Password must contain characters and numbers";
+        }
+        else
+            return "";
+    }
 
     @Override
     protected void onRestart() {
