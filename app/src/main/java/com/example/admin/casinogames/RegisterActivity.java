@@ -1,6 +1,7 @@
 package com.example.admin.casinogames;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -117,7 +118,10 @@ public class RegisterActivity extends Activity {
 
     private void signInSuccessful() {
         //successful Sign in, move to next activity
-        Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, CasinoLobbyActivity.class);
+        startActivity(intent);
+
+        //Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
     }
 
     private boolean validations(String email, String password, String rePassword) {

@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
 
     private void loginResult(JSONObject jsonObject) {
         if(jsonObject != null){
-            Intent intent = new Intent(this,RegisterActivity.class);
+            Intent intent = new Intent(this, CasinoLobbyActivity.class);
             //Create an Arraylist To pass The loged user info
             ArrayList userInfo = new ArrayList();
             try {

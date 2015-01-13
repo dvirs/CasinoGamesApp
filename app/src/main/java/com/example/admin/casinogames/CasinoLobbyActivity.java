@@ -2,37 +2,40 @@ package com.example.admin.casinogames;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class SplashActivity extends Activity {
+import java.util.ArrayList;
 
-    private final int TIME_WAIT = 3000;
+
+public class CasinoLobbyActivity extends Activity {
+
+    private Bundle bund;
+    private TextView userName_txt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_casino_lobby);
+        Intent intent = getIntent();
+        bund = intent.getExtras();
+        ArrayList userInfo = new ArrayList();
+        userInfo = (ArrayList) bund.get("userinfo");
 
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                SplashActivity.this.startActivity(intent);
-                SplashActivity.this.finish();
-            }
-        }, TIME_WAIT);
+        userName_txt = (TextView) findViewById(R.id.hi_txt);
+        userName_txt.setText("Hi " + userInfo.get(1));
+
     }
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_splash, menu);
+        getMenuInflater().inflate(R.menu.menu_casino_lobby, menu);
         return true;
     }
 

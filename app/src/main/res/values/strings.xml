@@ -20,4 +20,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="wrongInput">Wrong Username Or Password,\n Please try again!</string>
     <string name="wrong_reg">Wrong input</string>
+    <string name="title_activity_casino_lobby">CasinoLobbyActivity</string>
+
 </resources>
