@@ -104,4 +104,16 @@
         android:layout_alignEnd="@+id/password"
         android:layout_alignBottom="@+id/firstTime" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/wrong"
+        android:textColor="#ffff0c00"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#ff000000" />
+
 </RelativeLayout>

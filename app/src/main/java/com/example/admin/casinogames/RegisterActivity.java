@@ -1,25 +1,39 @@
 package com.example.admin.casinogames;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
 
 public class RegisterActivity extends Activity {
 
     private final int MIN_LEN = 6;
 
-    private EditText firstPassword;
-    private EditText secondPassword;
+    private EditText password;
+    private EditText rePassword;
     private EditText userName;
     private EditText email;
     private Button signUp;
-
+    private TextView emailTxt;
+    private TextView userNameTxt;
+    private TextView passwordTxt;
+    private TextView rePasswordTxt;
+    private TextView wrongInputTxt;
+    private String user,firstPass,secondPass,emailStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,66 +41,118 @@ public class RegisterActivity extends Activity {
 
         signUp = (Button) findViewById(R.id.singUp_btn_reg);
         email = (EditText) findViewById(R.id.email_et);
-        firstPassword = (EditText) findViewById(R.id.password_et_reg);
-        secondPassword = (EditText) findViewById(R.id.rePassword_et_reg);
+        password = (EditText) findViewById(R.id.password_et_reg);
+        rePassword = (EditText) findViewById(R.id.rePassword_et_reg);
         userName = (EditText) findViewById(R.id.userName_reg);
+        emailTxt = (TextView) findViewById(R.id.email_reg);
+        userNameTxt = (TextView) findViewById(R.id.userName_txt_reg);
+        passwordTxt = (TextView) findViewById(R.id.password_reg);
+        rePasswordTxt = (TextView) findViewById(R.id.rePassword_reg);
+        wrongInputTxt = (TextView) findViewById(R.id.wrong_reg);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg;
-                String user = userName.getText().toString();
-                String emailStr = email.getText().toString();
-                String firstPass = firstPassword.getText().toString();
-                String secondPass = secondPassword.getText().toString();
 
-                msg = validations(emailStr, firstPass, secondPass);
-                Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
+                user = userName.getText().toString();
+                emailStr = email.getText().toString();
+                firstPass = password.getText().toString();
+                secondPass = rePassword.getText().toString();
 
+              //  if(validations(emailStr, firstPass, secondPass)){
+                    ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
+                    userInfoArray.add(new BasicNameValuePair("username",user));
+                    userInfoArray.add(new BasicNameValuePair("email",emailStr));
+                    userInfoArray.add(new BasicNameValuePair("password",firstPass));
+                    new insertUserTask(userInfoArray).execute(new apiConnectorDB());
+
+            //    } else {
+            //        wrongInputTxt.setText(R.string.wrong_reg);
+            //    }
             }
         });
     }
-
-    private String validations(String email, String password, String rePassword) {
-        String msg = "";
-        msg += isValidEmail(email);
-        msg += isValidPassword(password, rePassword);
-        if(msg.equals("")) {
-            msg += "Loading...";
+    private class insertUserTask extends AsyncTask<apiConnectorDB,Long,Boolean>{
+        private ArrayList<NameValuePair> userInfoArray;
+        private insertUserTask(ArrayList<NameValuePair> userInfoArray) {
+            this.userInfoArray = userInfoArray;
         }
-        return msg;
+
+        @Override
+        protected Boolean doInBackground(apiConnectorDB... params) {
+            return params[0].InsertUser(userInfoArray);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+            if(aBoolean){
+                signInSuccessful();
+            }else{
+                signInNotSuccessful();
+            }
+        }
     }
 
-    private String isValidEmail(CharSequence target) {
+    private void signInNotSuccessful() {
+        //Not successful sign in
+    }
+
+    private void signInSuccessful() {
+        //successful Sign in, move to next activity
+        Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
+    }
+
+    private boolean validations(String email, String password, String rePassword) {
+        boolean flag = false;
+        if(isValidEmail(email)) {
+            flag = true;
+        }
+        if(isValidPassword(password,rePassword)){
+            flag = true;
+        }
+    return flag;
+    }
+
+    private boolean isValidEmail(CharSequence target) {
         if(!TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()){
-            return "";
+            emailTxt.setTextColor(Color.WHITE);
+            return true;
         }
         else {
             email.setText("");
-            firstPassword.setText("");
-            secondPassword.setText("");
-            return "Email not Valid ";
+            password.setText("");
+            rePassword.setText("");
+            emailTxt.setTextColor(Color.RED);
+            return false;
         }
     }
 
-    private String isValidPassword(String password, String rePassword) {
+    private boolean isValidPassword(String password, String rePassword) {
         if(!password.equals(rePassword) || password.equals("")){
-            firstPassword.setText("");
-            secondPassword.setText("");
-            return "The Passwords Don't Match ";
+            this.password.setText("");
+            this.rePassword.setText("");
+            passwordTxt.setTextColor(Color.RED);
+            rePasswordTxt.setTextColor(Color.RED);
+            Log.e("Debug","im inside password Check");
+            return false;
         }
         else if(password.length() < MIN_LEN) {
-            firstPassword.setText("");
-            secondPassword.setText("");
-            return "Password must be at least six characters";
+            this.password.setText("");
+            this.rePassword.setText("");
+            passwordTxt.setTextColor(Color.RED);
+            rePasswordTxt.setTextColor(Color.RED);
+            return false;
         }
         else if(!password.matches(".*\\d.*") || !password.matches(".*[a-z]")) {
-            firstPassword.setText("");
-            secondPassword.setText("");
-            return "Password must contain characters and numbers";
+            this.password.setText("");
+            this.rePassword.setText("");
+            passwordTxt.setTextColor(Color.RED);
+            rePasswordTxt.setTextColor(Color.RED);
+            return false;
         }
         else
-            return "";
+            return true;
     }
 
     @Override

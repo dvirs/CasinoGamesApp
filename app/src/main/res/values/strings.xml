@@ -18,5 +18,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="wrongInput">Wrong Username Or Password,\n Please try again!</string>
+    <string name="wrong_reg">Wrong input</string>
 </resources>
