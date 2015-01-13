@@ -11,6 +11,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -21,17 +22,21 @@ public class apiConnectorDB {
     public Boolean InsertUser(ArrayList<NameValuePair> list){
         String url = "http://omriglam.netau.net/insert_user.php";
         HttpEntity httpEntity= null;
+        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new UrlEncodedFormEntity(list));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             httpEntity = httpResponse.getEntity();
+
+
             Log.e("Debug", "connected insert User!");
         } catch (Exception e) {
             Log.e("Debug","Didnt connected! " + e.toString());
             return false;
         }
+
         return true;
     }
 

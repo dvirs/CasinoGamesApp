@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -23,22 +25,43 @@ public class RegisterActivity extends Activity {
 
     private final int MIN_LEN = 6;
 
-    private EditText password;
-    private EditText rePassword;
-    private EditText userName;
-    private EditText email;
+    private EditText password,email,rePassword,userName;
     private Button signUp;
     private TextView emailTxt;
-    private TextView userNameTxt;
-    private TextView passwordTxt;
-    private TextView rePasswordTxt;
-    private TextView wrongInputTxt;
+    private TextView userNameTxt,passwordTxt,rePasswordTxt,wrongInputTxt;
     private String user,firstPass,secondPass,emailStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        setViewOfFields();
+
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                user = ""+userName.getText().toString();
+                emailStr = ""+email.getText().toString();
+                firstPass = ""+password.getText().toString();
+                secondPass = ""+rePassword.getText().toString();
+
+            //    if(validations(emailStr, firstPass, secondPass)){
+                    ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
+                    userInfoArray.add(new BasicNameValuePair("username",user));
+                    userInfoArray.add(new BasicNameValuePair("email",emailStr));
+                    userInfoArray.add(new BasicNameValuePair("password",firstPass));
+                    new insertUserTask(userInfoArray).execute(new apiConnectorDB());
+
+             //   } else {
+             //       wrongInputTxt.setText(R.string.wrong_reg);
+             //   }
+            }
+        });
+    }
+
+    private void setViewOfFields() {
         signUp = (Button) findViewById(R.id.singUp_btn_reg);
         email = (EditText) findViewById(R.id.email_et);
         password = (EditText) findViewById(R.id.password_et_reg);
@@ -49,29 +72,8 @@ public class RegisterActivity extends Activity {
         passwordTxt = (TextView) findViewById(R.id.password_reg);
         rePasswordTxt = (TextView) findViewById(R.id.rePassword_reg);
         wrongInputTxt = (TextView) findViewById(R.id.wrong_reg);
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                user = userName.getText().toString();
-                emailStr = email.getText().toString();
-                firstPass = password.getText().toString();
-                secondPass = rePassword.getText().toString();
-
-              //  if(validations(emailStr, firstPass, secondPass)){
-                    ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
-                    userInfoArray.add(new BasicNameValuePair("username",user));
-                    userInfoArray.add(new BasicNameValuePair("email",emailStr));
-                    userInfoArray.add(new BasicNameValuePair("password",firstPass));
-                    new insertUserTask(userInfoArray).execute(new apiConnectorDB());
-
-            //    } else {
-            //        wrongInputTxt.setText(R.string.wrong_reg);
-            //    }
-            }
-        });
     }
+
     private class insertUserTask extends AsyncTask<apiConnectorDB,Long,Boolean>{
         private ArrayList<NameValuePair> userInfoArray;
         private insertUserTask(ArrayList<NameValuePair> userInfoArray) {
@@ -80,9 +82,24 @@ public class RegisterActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(apiConnectorDB... params) {
+            JSONArray jsonArray = params[0].getAllUsers();
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = jsonArray.getJSONObject(i);
+                        if (json.getString("username").equals(userInfoArray.get(0).getValue()) ||
+                                json.getString("email").equals(userInfoArray.get(1).getValue())) {
+                            return false;
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("de", "Faild getting the Json Object");
+                    }
+                }
+            }
             return params[0].InsertUser(userInfoArray);
         }
-
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
@@ -107,10 +124,10 @@ public class RegisterActivity extends Activity {
         boolean flag = false;
         if(isValidEmail(email)) {
             flag = true;
-        }
+        }else { flag = false;}
         if(isValidPassword(password,rePassword)){
             flag = true;
-        }
+        }else { flag = false;}
     return flag;
     }
 
@@ -130,29 +147,28 @@ public class RegisterActivity extends Activity {
 
     private boolean isValidPassword(String password, String rePassword) {
         if(!password.equals(rePassword) || password.equals("")){
-            this.password.setText("");
-            this.rePassword.setText("");
-            passwordTxt.setTextColor(Color.RED);
-            rePasswordTxt.setTextColor(Color.RED);
-            Log.e("Debug","im inside password Check");
+            wrongPassInput();
             return false;
         }
         else if(password.length() < MIN_LEN) {
-            this.password.setText("");
-            this.rePassword.setText("");
-            passwordTxt.setTextColor(Color.RED);
-            rePasswordTxt.setTextColor(Color.RED);
+            wrongPassInput();
             return false;
         }
-        else if(!password.matches(".*\\d.*") || !password.matches(".*[a-z]")) {
-            this.password.setText("");
-            this.rePassword.setText("");
-            passwordTxt.setTextColor(Color.RED);
-            rePasswordTxt.setTextColor(Color.RED);
+        else if(!password.matches("(?=.*\\d)")) {
+            wrongPassInput();
+            return false;
+        }else if(!password.matches("(?=.*[a-z])")){
+            wrongPassInput();
             return false;
         }
-        else
             return true;
+    }
+
+    private void wrongPassInput() {
+        this.password.setText("");
+        this.rePassword.setText("");
+        passwordTxt.setTextColor(Color.RED);
+        rePasswordTxt.setTextColor(Color.RED);
     }
 
     @Override
