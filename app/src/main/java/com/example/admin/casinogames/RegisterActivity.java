@@ -27,10 +27,10 @@ public class RegisterActivity extends Activity {
     private final int MIN_LEN = 6;
 
     private EditText password,email,rePassword,userName;
+    private TextView userNameTxt, passwordTxt, rePasswordTxt, wrongInputTxt, emailTxt;
     private Button signUp;
-    private TextView emailTxt;
-    private TextView userNameTxt,passwordTxt,rePasswordTxt,wrongInputTxt;
     private String user,firstPass,secondPass,emailStr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +62,6 @@ public class RegisterActivity extends Activity {
         });
     }
 
-    private void setViewOfFields() {
-        signUp = (Button) findViewById(R.id.singUp_btn_reg);
-        email = (EditText) findViewById(R.id.email_et);
-        password = (EditText) findViewById(R.id.password_et_reg);
-        rePassword = (EditText) findViewById(R.id.rePassword_et_reg);
-        userName = (EditText) findViewById(R.id.userName_reg);
-        emailTxt = (TextView) findViewById(R.id.email_reg);
-        userNameTxt = (TextView) findViewById(R.id.userName_txt_reg);
-        passwordTxt = (TextView) findViewById(R.id.password_reg);
-        rePasswordTxt = (TextView) findViewById(R.id.rePassword_reg);
-        wrongInputTxt = (TextView) findViewById(R.id.wrong_reg);
-    }
-
     private class insertUserTask extends AsyncTask<apiConnectorDB,Long,Boolean>{
         private ArrayList<NameValuePair> userInfoArray;
         private insertUserTask(ArrayList<NameValuePair> userInfoArray) {
@@ -93,7 +80,6 @@ public class RegisterActivity extends Activity {
                                 json.getString("email").equals(userInfoArray.get(1).getValue())) {
                             return false;
                         }
-
                     } catch (Exception e) {
                         Log.e("de", "Faild getting the Json Object");
                     }
@@ -101,6 +87,7 @@ public class RegisterActivity extends Activity {
             }
             return params[0].InsertUser(userInfoArray);
         }
+
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
@@ -110,69 +97,6 @@ public class RegisterActivity extends Activity {
                 signInNotSuccessful();
             }
         }
-    }
-
-    private void signInNotSuccessful() {
-        //Not successful sign in
-    }
-
-    private void signInSuccessful() {
-        //successful Sign in, move to next activity
-        Intent intent = new Intent(this, CasinoLobbyActivity.class);
-        startActivity(intent);
-
-        //Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
-    }
-
-    private boolean validations(String email, String password, String rePassword) {
-        boolean flag = false;
-        if(isValidEmail(email)) {
-            flag = true;
-        }else { flag = false;}
-        if(isValidPassword(password,rePassword)){
-            flag = true;
-        }else { flag = false;}
-    return flag;
-    }
-
-    private boolean isValidEmail(CharSequence target) {
-        if(!TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()){
-            emailTxt.setTextColor(Color.WHITE);
-            return true;
-        }
-        else {
-            email.setText("");
-            password.setText("");
-            rePassword.setText("");
-            emailTxt.setTextColor(Color.RED);
-            return false;
-        }
-    }
-
-    private boolean isValidPassword(String password, String rePassword) {
-        if(!password.equals(rePassword) || password.equals("")){
-            wrongPassInput();
-            return false;
-        }
-        else if(password.length() < MIN_LEN) {
-            wrongPassInput();
-            return false;
-        }
-        else if(!password.matches("(?=.*\\d)")) {
-            wrongPassInput();
-            return false;
-        }else if(!password.matches("(?=.*[a-z])")){
-            wrongPassInput();
-            return false;
-        }
-            return true;
-    }
-
-    private void wrongPassInput() {
-        this.password.setText("");
-        this.rePassword.setText("");
-        passwordTxt.setTextColor(Color.RED);
-        rePasswordTxt.setTextColor(Color.RED);
     }
 
     @Override
@@ -226,4 +150,81 @@ public class RegisterActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void signInNotSuccessful() {
+        //Not successful sign in
+    }
+
+    private void signInSuccessful() {
+        //successful Sign in, move to next activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
+        //Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
+    }
+
+    private void setViewOfFields() {
+        signUp = (Button) findViewById(R.id.singUp_btn_reg);
+        email = (EditText) findViewById(R.id.email_et);
+        password = (EditText) findViewById(R.id.password_et_reg);
+        rePassword = (EditText) findViewById(R.id.rePassword_et_reg);
+        userName = (EditText) findViewById(R.id.userName_reg);
+        emailTxt = (TextView) findViewById(R.id.email_reg);
+        userNameTxt = (TextView) findViewById(R.id.userName_txt_reg);
+        passwordTxt = (TextView) findViewById(R.id.password_reg);
+        rePasswordTxt = (TextView) findViewById(R.id.rePassword_reg);
+        wrongInputTxt = (TextView) findViewById(R.id.wrong_reg);
+    }
+
+    private boolean validations(String email, String password, String rePassword) {
+        boolean flag = false;
+        if(isValidEmail(email)) {
+            flag = true;
+        }else { flag = false;}
+        if(isValidPassword(password,rePassword)){
+            flag = true;
+        }else { flag = false;}
+        return flag;
+    }
+
+    private boolean isValidEmail(CharSequence target) {
+        if(!TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()){
+            emailTxt.setTextColor(Color.WHITE);
+            return true;
+        }
+        else {
+            email.setText("");
+            password.setText("");
+            rePassword.setText("");
+            emailTxt.setTextColor(Color.RED);
+            return false;
+        }
+    }
+
+    private boolean isValidPassword(String password, String rePassword) {
+        if(!password.equals(rePassword) || password.equals("")){
+            wrongPassInput();
+            return false;
+        }
+        else if(password.length() < MIN_LEN) {
+            wrongPassInput();
+            return false;
+        }
+        else if(!password.matches("(?=.*\\d)")) {
+            wrongPassInput();
+            return false;
+        }else if(!password.matches("(?=.*[a-z])")){
+            wrongPassInput();
+            return false;
+        }
+        return true;
+    }
+
+    private void wrongPassInput() {
+        this.password.setText("");
+        this.rePassword.setText("");
+        passwordTxt.setTextColor(Color.RED);
+        rePasswordTxt.setTextColor(Color.RED);
+    }
+
 }

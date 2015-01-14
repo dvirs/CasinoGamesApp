@@ -7,13 +7,12 @@
     android:background = "@drawable/casino_lobby"
     tools:context="com.example.admin.casinogames.CasinoLobbyActivity">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Hi "
         android:id="@+id/hi_txt"
+        android:text=" "
         android:layout_weight="0.16"
         android:textColor="#fe010000"
         android:textSize="30dp"
@@ -46,7 +45,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="settings"
+        android:text="@string/settings"
         android:id="@+id/settings_btn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -55,7 +54,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="high score"
+        android:text="@string/high_score"
         android:id="@+id/high_score_btn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -63,8 +62,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="log out"
-        android:id="@+id/button3"
+        android:text="@string/log_out"
+        android:id="@+id/logout_btn"
         android:layout_alignTop="@+id/high_score_btn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -83,13 +82,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="total money"
         android:id="@+id/total_money_txt"
         android:layout_alignTop="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:layout_alignBottom="@+id/imageView"
-        android:layout_toStartOf="@+id/button3"
+        android:layout_toStartOf="@+id/logout_btn"
         android:textSize="30dp"
         android:textColor="#ff020000"
         android:layout_alignParentRight="true"

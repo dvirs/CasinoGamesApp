@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,10 +16,15 @@ public class CasinoLobbyActivity extends Activity {
 
     private Bundle bund;
     private TextView userName_txt;
+    private TextView totalMoney_txt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        userName_txt = (TextView) findViewById(R.id.hi_txt);
+        totalMoney_txt = (TextView) findViewById(R.id.total_money_txt);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_casino_lobby);
         Intent intent = getIntent();
@@ -26,8 +32,15 @@ public class CasinoLobbyActivity extends Activity {
         ArrayList userInfo = new ArrayList();
         userInfo = (ArrayList) bund.get("userinfo");
 
-        userName_txt = (TextView) findViewById(R.id.hi_txt);
-        userName_txt.setText("Hi " + userInfo.get(1));
+
+        Log.e("debug", "len = " + userInfo.size());
+        Log.e("debug", "0 = " +  userInfo.get(0).toString());
+        Log.e("debug", "1 = " +  userInfo.get(1).toString());
+        Log.e("debug", "2 = " +  userInfo.get(2).toString());
+        Log.e("debug", "3 = " +  userInfo.get(3).toString());
+        Log.e("debug", "4 = " +  userInfo.get(4).toString());
+        //userName_txt.setText("Hi " + userInfo.get(1));
+        //totalMoney_txt.setText("" + userInfo.get(4).toString());
 
     }
 

@@ -107,8 +107,11 @@ public class MainActivity extends Activity {
             try {
                 userInfo.add(jsonObject.getInt("id"));
                 userInfo.add(jsonObject.getString("username"));
-                userInfo.add(jsonObject.getString("pasword"));
+                userInfo.add(jsonObject.getString("email"));
+                userInfo.add(jsonObject.getString("password"));
                 userInfo.add(jsonObject.getInt("totalmoney"));
+
+
 
             }catch (Exception e){
                 Log.e(DEBUG,"Didnt parse thr Json to ArryList");
