@@ -111,10 +111,8 @@ public class MainActivity extends Activity {
                 userInfo.add(jsonObject.getString("password"));
                 userInfo.add(jsonObject.getInt("totalmoney"));
 
-
-
             }catch (Exception e){
-                Log.e(DEBUG,"Didnt parse thr Json to ArryList");
+                Log.e(DEBUG,"Didnt parse the Json to ArryList");
             }
             intent.putExtra("userinfo",userInfo);
             startActivity(intent);

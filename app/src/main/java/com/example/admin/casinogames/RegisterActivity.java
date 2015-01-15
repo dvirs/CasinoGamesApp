@@ -20,16 +20,20 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class RegisterActivity extends Activity {
+import javax.crypto.EncryptedPrivateKeyInfo;
 
+public class RegisterActivity extends Activity {
+    private static final String REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
     private final int MIN_LEN = 6;
 
     private EditText password,email,rePassword,userName;
     private TextView userNameTxt, passwordTxt, rePasswordTxt, wrongInputTxt, emailTxt;
     private Button signUp;
     private String user,firstPass,secondPass,emailStr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +52,16 @@ public class RegisterActivity extends Activity {
                 firstPass = ""+password.getText().toString();
                 secondPass = ""+rePassword.getText().toString();
 
-            //    if(validations(emailStr, firstPass, secondPass)){
+                    if(validations(emailStr, firstPass, secondPass)){
                     ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
                     userInfoArray.add(new BasicNameValuePair("username",user));
                     userInfoArray.add(new BasicNameValuePair("email",emailStr));
                     userInfoArray.add(new BasicNameValuePair("password",firstPass));
                     new insertUserTask(userInfoArray).execute(new apiConnectorDB());
 
-             //   } else {
-             //       wrongInputTxt.setText(R.string.wrong_reg);
-             //   }
+                } else {
+                    wrongInputTxt.setText(R.string.wrong_reg);
+                }
             }
         });
     }
@@ -153,14 +157,17 @@ public class RegisterActivity extends Activity {
 
     private void signInNotSuccessful() {
         //Not successful sign in
+        wrongInputTxt.setText(R.string.user_name_is_taken);
     }
 
     private void signInSuccessful() {
         //successful Sign in, move to next activity
+        Toast.makeText(this,R.string.sign_successful,Toast.LENGTH_LONG).show();
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
-        //Toast.makeText(this,"Good",Toast.LENGTH_LONG).show();
+
     }
 
     private void setViewOfFields() {
@@ -202,18 +209,10 @@ public class RegisterActivity extends Activity {
     }
 
     private boolean isValidPassword(String password, String rePassword) {
-        if(!password.equals(rePassword) || password.equals("")){
+        if(!password.equals(rePassword) || password.equals("")) {
             wrongPassInput();
             return false;
-        }
-        else if(password.length() < MIN_LEN) {
-            wrongPassInput();
-            return false;
-        }
-        else if(!password.matches("(?=.*\\d)")) {
-            wrongPassInput();
-            return false;
-        }else if(!password.matches("(?=.*[a-z])")){
+        }else if(!password.matches(REGEX)){
             wrongPassInput();
             return false;
         }
