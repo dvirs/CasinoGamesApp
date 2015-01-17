@@ -1,15 +1,25 @@
 package com.example.admin.casinogames;
 
+import android.app.ActionBar;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -59,7 +69,7 @@ public class CasinoLobbyActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        
+
     }
 
     @Override
@@ -114,6 +124,53 @@ public class CasinoLobbyActivity extends Activity {
                 CasinoLobbyActivity.this.startActivity(i);
             }
         });
+
+        highScoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService((LAYOUT_INFLATER_SERVICE));
+                View popup = inflater.inflate(R.layout.popup_high_score, null);
+                final PopupWindow popupWindow = new PopupWindow(popup, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
+                Button close = (Button) popup.findViewById(R.id.close_btn);
+                close.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+                popupWindow.showAsDropDown(userNameTxt, 500, -100);
+                new topUsers().execute(new apiConnectorDB());
+            }
+        });
+
+    }
+
+    private class topUsers extends AsyncTask<apiConnectorDB,Long,JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(apiConnectorDB... params) {
+            JSONArray jsonArray = params[0].getTopUsers();
+            JSONObject json = null;
+            if(jsonArray != null){
+                for(int i = 0; i < jsonArray.length(); i++){
+                    try{
+                        json = jsonArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            Log.e("debug", json.toString());
+            return json;
+
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+
+        }
     }
 
 }

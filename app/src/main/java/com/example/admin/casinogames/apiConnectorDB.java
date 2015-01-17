@@ -53,16 +53,13 @@ public class apiConnectorDB {
             httpEntity = httpResponse.getEntity();
             Log.e("Debug", "connected!");
         } catch (Exception e) {
-
             Log.e("Debug","Didnt connected! " + e.toString());
-
         }
 
         JSONArray jsonArray = null;
 
         if(httpEntity != null){
             try{
-
                 String entityResponse = EntityUtils.toString(httpEntity);
                 Log.e("Debug","httpEntity is not empty: \n"+entityResponse);
                 jsonArray = new JSONArray(entityResponse);
@@ -75,4 +72,37 @@ public class apiConnectorDB {
         return jsonArray;
 
     }
+
+    public JSONArray getTopUsers(){
+
+        String url = "http://omriglam.netau.net/top_users.php"; //External Database
+        // String url = "http://192.168.1.11:81/test.php";  //Localhost Database
+        HttpEntity httpEntity= null;
+
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            httpEntity = httpResponse.getEntity();
+            Log.e("Debug", "connected!");
+        } catch (Exception e) {
+            Log.e("Debug","Didnt connected! " + e.toString());
+        }
+
+        JSONArray jsonArray = null;
+
+        if(httpEntity != null){
+            try{
+                String entityResponse = EntityUtils.toString(httpEntity);
+                Log.e("Debug","httpEntity is not empty: \n"+entityResponse);
+                jsonArray = new JSONArray(entityResponse);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            Log.e("Debug","httpEntity is EMPTY");
+        }
+        return jsonArray;
+    }
+
 }

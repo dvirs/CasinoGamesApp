@@ -27,4 +27,5 @@
     <string name="splash_title">Omri Glam &amp; Dvir Sofer inc.</string>
     <string name="user_name_is_taken">User name or email is already in use</string>
     <string name="sign_successful">\"SignUp successful\"</string>
+    <string name="top_10">Top 10 players</string>
 </resources>
