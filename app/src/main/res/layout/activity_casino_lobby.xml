@@ -7,20 +7,7 @@
     android:background = "@drawable/casino_lobby"
     tools:context="com.example.admin.casinogames.CasinoLobbyActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/hi_txt"
-        android:text=" "
-        android:layout_weight="0.16"
-        android:textColor="#fe010000"
-        android:textSize="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/high_score_btn"
-        android:layout_toStartOf="@+id/high_score_btn" />
+
 
     <ImageButton
         android:layout_width="118dp"
@@ -78,10 +65,24 @@
         android:layout_toRightOf="@+id/hi_txt"
         android:layout_alignRight="@+id/high_score_btn"
         android:layout_alignEnd="@+id/high_score_btn" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/hi_txt"
+        android:text="Hi, user"
+        android:layout_weight="0.16"
+        android:textColor="#fe010000"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/high_score_btn"
+        android:layout_toStartOf="@+id/high_score_btn" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10000$"
         android:id="@+id/total_money_txt"
         android:layout_alignTop="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
