@@ -82,7 +82,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10000$"
+        android:text="0$"
         android:id="@+id/total_money_txt"
         android:layout_alignTop="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
@@ -92,6 +92,29 @@
         android:textColor="#ff020000"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in"
+        android:id="@+id/sign_in_btn_lob"
+        android:layout_alignTop="@+id/poker_btn"
+        android:layout_toLeftOf="@+id/total_money_txt"
+        android:layout_toRightOf="@+id/hi_txt"
+        android:layout_toEndOf="@+id/hi_txt" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sign_up_btn_lob"
+        android:text="@string/sign_up"
+        android:layout_below="@+id/sign_in_btn_lob"
+        android:layout_alignLeft="@+id/sign_in_btn_lob"
+        android:layout_alignStart="@+id/sign_in_btn_lob"
+        android:layout_alignRight="@+id/sign_in_btn_lob"
+        android:layout_alignEnd="@+id/sign_in_btn_lob" />
 
 
 </RelativeLayout>

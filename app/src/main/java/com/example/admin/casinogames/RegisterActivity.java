@@ -171,7 +171,7 @@ public class RegisterActivity extends Activity {
     }
 
     private void setViewOfFields() {
-        signUp = (Button) findViewById(R.id.singUp_btn_reg);
+        signUp = (Button) findViewById(R.id.sginUp_btn_reg);
         email = (EditText) findViewById(R.id.email_et);
         password = (EditText) findViewById(R.id.password_et_reg);
         rePassword = (EditText) findViewById(R.id.rePassword_et_reg);

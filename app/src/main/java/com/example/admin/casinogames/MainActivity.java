@@ -24,8 +24,7 @@ public class MainActivity extends Activity {
 
     private String userName;
     private String password;
-    private Button singUP_btn;
-    private Button singIn_btn;
+    private Button signIn_btn;
     private EditText etUsername,etPassword;
     private TextView wrongInput;
 
@@ -44,12 +43,11 @@ public class MainActivity extends Activity {
     private void setViewOfFields() {
         etUsername = (EditText) findViewById(R.id.userName);
         etPassword = (EditText) findViewById(R.id.password);
-        singIn_btn = (Button)findViewById(R.id.singIn_btn);
-        singUP_btn = (Button)findViewById(R.id.singUp_btn);
+        signIn_btn = (Button)findViewById(R.id.signIn_btn_log);
         wrongInput = (TextView) findViewById(R.id.wrong);
     }
     private void setButtonClickable() {
-        singIn_btn.setOnClickListener(new OnClickListener(){
+        signIn_btn.setOnClickListener(new OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -57,15 +55,6 @@ public class MainActivity extends Activity {
                 password = etPassword.getText().toString();
 
                 new loginCheck().execute(new apiConnectorDB());
-            }
-        });
-
-        singUP_btn.setOnClickListener(new OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, RegisterActivity.class);
-                MainActivity.this.startActivity(i);
             }
         });
     }

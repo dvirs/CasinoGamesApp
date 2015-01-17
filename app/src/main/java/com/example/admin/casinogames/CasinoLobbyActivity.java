@@ -1,12 +1,14 @@
 package com.example.admin.casinogames;
 
 import android.app.Activity;
-import android.content.Intent;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,38 +17,50 @@ import java.util.ArrayList;
 public class CasinoLobbyActivity extends Activity {
 
     private Bundle bund;
-    private TextView userName_txt;
-    private TextView totalMoney_txt;
+    private TextView userNameTxt, totalMoneyTxt;
+    private ImageButton cubes_btn, poker_btn;
+    private Button settingsBtn, highScoreBtn, logoutBtn, signInBtn, signUpBtn;
     private ArrayList userInfo;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_casino_lobby);
 
-        userName_txt = (TextView) findViewById(R.id.hi_txt);
-        totalMoney_txt = (TextView) findViewById(R.id.total_money_txt);
-
-
-
+        setViewOfFields();
         Intent intent = getIntent();
         bund = intent.getExtras();
-        userInfo = (ArrayList) bund.get("userinfo");
+        if(bund == null) {
+            cubes_btn.setVisibility(View.INVISIBLE);
+            poker_btn.setVisibility(View.INVISIBLE);
+            settingsBtn.setVisibility(View.INVISIBLE);
+            highScoreBtn.setVisibility(View.INVISIBLE);
+            logoutBtn.setVisibility(View.INVISIBLE);
+        }
+        else {
+            cubes_btn.setVisibility(View.VISIBLE);
+            poker_btn.setVisibility(View.VISIBLE);
+            settingsBtn.setVisibility(View.VISIBLE);
+            highScoreBtn.setVisibility(View.VISIBLE);
+            logoutBtn.setVisibility(View.VISIBLE);
+            signInBtn.setVisibility(View.INVISIBLE);
+            signUpBtn.setVisibility(View.INVISIBLE);
 
+            userInfo = (ArrayList) bund.get("userinfo");
+            userNameTxt.setText("Hello, " + userInfo.get(1).toString());
+            totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
 
-       // Log.e("debug", "len = " + userInfo.size());
-      //  Log.e("debug", "0 = " +  userInfo.get(0).toString());
-       // Log.e("debug", "1 = " +  userInfo.get(1).toString());
-      //  Log.e("debug", "2 = " +  userInfo.get(2).toString());
-     //   Log.e("debug", "3 = " +  userInfo.get(3).toString());
-     //   Log.e("debug", "4 = " +  userInfo.get(4).toString());
-        userName_txt.setText("Hello, " + userInfo.get(1).toString());
-        totalMoney_txt.setText(userInfo.get(4).toString()+"$");
-        Log.e("Debug", userInfo.toString());
+        }
+
+        setButtonClickable();
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,4 +83,37 @@ public class CasinoLobbyActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void setViewOfFields() {
+        userNameTxt = (TextView) findViewById(R.id.hi_txt);
+        totalMoneyTxt = (TextView) findViewById(R.id.total_money_txt);
+        cubes_btn = (ImageButton) findViewById(R.id.cubes_btn);
+        poker_btn = (ImageButton) findViewById(R.id.poker_btn);
+        settingsBtn = (Button) findViewById(R.id.settings_btn);
+        highScoreBtn = (Button) findViewById(R.id.high_score_btn);
+        logoutBtn = (Button) findViewById(R.id.logout_btn);
+        signInBtn = (Button) findViewById(R.id.sign_in_btn_lob);
+        signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
+    }
+
+    private void setButtonClickable() {
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CasinoLobbyActivity.this, MainActivity.class);
+                CasinoLobbyActivity.this.startActivity(i);
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CasinoLobbyActivity.this, RegisterActivity.class);
+                CasinoLobbyActivity.this.startActivity(i);
+            }
+        });
+    }
+
 }

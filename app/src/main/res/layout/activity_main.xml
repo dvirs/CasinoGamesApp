@@ -19,8 +19,8 @@
         android:textIsSelectable="false"
         android:textColor="#ffffffec"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/singIn_btn"
-        android:layout_alignEnd="@+id/singIn_btn" />
+        android:layout_alignRight="@+id/signIn_btn_log"
+        android:layout_alignEnd="@+id/signIn_btn_log" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_in"
-        android:id="@+id/singIn_btn"
+        android:id="@+id/signIn_btn_log"
         android:textSize="20dp"
         android:textColor="#ffffffff"
         android:layout_below="@+id/password"
@@ -81,36 +81,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/first_time"
-        android:id="@+id/firstTime"
-        android:textSize="20dp"
-        android:textColor="#ffffffff"
-        android:layout_below="@+id/singIn_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        android:id="@+id/singUp_btn"
-        android:textSize="20dp"
-        android:textColor="#ffffffff"
-        android:background="#ff0c0c0c"
-
-        android:layout_alignTop="@+id/firstTime"
-        android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password"
-        android:layout_alignBottom="@+id/firstTime" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text=""
         android:id="@+id/wrong"
         android:textColor="#ffff0c00"
         android:textSize="20dp"
+        android:layout_below="@+id/signIn_btn_log"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
