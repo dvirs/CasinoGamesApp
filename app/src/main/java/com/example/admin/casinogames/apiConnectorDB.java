@@ -102,6 +102,7 @@ public class apiConnectorDB {
         }else{
             Log.e("Debug","httpEntity is EMPTY");
         }
+        Log.e("debug", jsonArray.toString());
         return jsonArray;
     }
 

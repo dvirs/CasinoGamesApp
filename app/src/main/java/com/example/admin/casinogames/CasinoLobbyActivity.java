@@ -11,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,7 @@ public class CasinoLobbyActivity extends Activity {
     private ImageButton cubes_btn, poker_btn;
     private Button settingsBtn, highScoreBtn, logoutBtn, signInBtn, signUpBtn;
     private ArrayList userInfo;
+    private ListView usersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class CasinoLobbyActivity extends Activity {
         logoutBtn = (Button) findViewById(R.id.logout_btn);
         signInBtn = (Button) findViewById(R.id.sign_in_btn_lob);
         signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
+        usersList = (ListView) findViewById(R.id.user_list);
     }
 
     private void setButtonClickable() {
@@ -147,29 +150,39 @@ public class CasinoLobbyActivity extends Activity {
 
     }
 
-    private class topUsers extends AsyncTask<apiConnectorDB,Long,JSONObject> {
+    private class topUsers extends AsyncTask<apiConnectorDB,Long,ArrayList> {
 
         @Override
-        protected JSONObject doInBackground(apiConnectorDB... params) {
+        protected ArrayList doInBackground(apiConnectorDB... params) {
             JSONArray jsonArray = params[0].getTopUsers();
-            JSONObject json = null;
+            ArrayList<JSONObject> arrayList = new ArrayList<JSONObject>();
+
             if(jsonArray != null){
                 for(int i = 0; i < jsonArray.length(); i++){
                     try{
-                        json = jsonArray.getJSONObject(i);
+                        arrayList.add(i, jsonArray.getJSONObject(i));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            Log.e("debug", json.toString());
-            return json;
 
+            return arrayList;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
+        protected void onPostExecute(ArrayList arrayList) {
+            Log.e("debugggggggg", "array = " + arrayList.toString());
+            String[] values = new String[arrayList.size()];
+            for(int i = 0; i < arrayList.size(); i++) {
+                values[i] = arrayList.get(i).toString();
+            }
+            Log.e("debugggggggg", "values = " + values.toString());
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CasinoLobbyActivity.this, R.layout.popup_high_score, R.id.user_list, values);
+            /*for(int i = 0; i < arrayList.size(); i++) {
+                adapter.add(values[i]);
+            }*/
+            usersList.setAdapter(adapter);
         }
     }
 

@@ -24,4 +24,24 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/register_txt"
+        android:layout_alignLeft="@+id/register_txt"
+        android:layout_alignStart="@+id/register_txt"
+        android:layout_alignRight="@+id/register_txt"
+        android:layout_alignEnd="@+id/register_txt"
+        android:layout_above="@+id/close_btn">
+
+        <ListView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/top_10" />
+
+
+    </LinearLayout>
+
 </RelativeLayout>
