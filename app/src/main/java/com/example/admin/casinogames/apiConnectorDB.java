@@ -76,7 +76,6 @@ public class apiConnectorDB {
     public JSONArray getTopUsers(){
 
         String url = "http://omriglam.netau.net/top_users.php"; //External Database
-        // String url = "http://192.168.1.11:81/test.php";  //Localhost Database
         HttpEntity httpEntity= null;
 
         try {

@@ -4,25 +4,20 @@ import android.app.ActionBar;
 import android.app.Activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.admin.casinogames.UtilClass.MyAdapter;
+import com.example.admin.casinogames.UtilClass.User;
+import com.example.admin.casinogames.com.example.admin.Tasks.TopUsersTask;
 
 import java.util.ArrayList;
 
@@ -35,6 +30,7 @@ public class CasinoLobbyActivity extends Activity {
     private Button settingsBtn, highScoreBtn, logoutBtn, signInBtn, signUpBtn;
     private ArrayList userInfo;
     private ListView usersList;
+    private CasinoLobbyActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +47,7 @@ public class CasinoLobbyActivity extends Activity {
     }
 
     private void setViewOfFields() {
+        activity = this;
         userNameTxt = (TextView) findViewById(R.id.hi_txt);
         totalMoneyTxt = (TextView) findViewById(R.id.total_money_txt);
         cubes_btn = (ImageButton) findViewById(R.id.cubes_btn);
@@ -114,6 +111,8 @@ public class CasinoLobbyActivity extends Activity {
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService((LAYOUT_INFLATER_SERVICE));
                 View popup = inflater.inflate(R.layout.popup_high_score, null);
                 final PopupWindow popupWindow = new PopupWindow(popup, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                usersList = (ListView) findViewById(R.id.user_list);
+
 
                 Button close = (Button) popup.findViewById(R.id.close_btn);
                 close.setOnClickListener(new View.OnClickListener(){
@@ -124,12 +123,17 @@ public class CasinoLobbyActivity extends Activity {
                     }
                 });
                 popupWindow.showAsDropDown(userNameTxt, 500, -100);
-                new TopUsersTask().execute(new apiConnectorDB());
+                new TopUsersTask(activity).execute(new apiConnectorDB());
+
             }
         });
 
     }
+    public void setUsersArray(ArrayList<User> topUsers){
+        MyAdapter adapter = new MyAdapter(this,topUsers);
+        usersList.setAdapter(adapter);
 
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        android:longClickable="false"
+        android:adjustViewBounds="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name"
+        android:id="@+id/user_name"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="email@gmail.com"
+        android:id="@+id/user_email"
+        android:layout_below="@+id/user_name"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="10000"
+        android:id="@+id/user_total"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+</RelativeLayout>
