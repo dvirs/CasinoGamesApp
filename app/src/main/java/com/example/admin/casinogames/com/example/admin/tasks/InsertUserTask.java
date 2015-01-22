@@ -18,9 +18,10 @@ import java.util.ArrayList;
 public class InsertUserTask extends AsyncTask<apiConnectorDB,Long,Boolean> {
     private ArrayList<NameValuePair> userInfoArray;
     private RegisterActivity activity;
+
     public InsertUserTask(ArrayList<NameValuePair> userInfoArray, RegisterActivity activity) {
         this.userInfoArray = userInfoArray;
-        this.activity = this.activity;
+        this.activity = activity;
     }
 
     @Override

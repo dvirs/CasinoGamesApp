@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.admin.casinogames.com.example.admin.Tasks.loginCheckTask;
+import com.example.admin.casinogames.com.example.admin.tasks.loginCheckTask;
 
 import java.util.ArrayList;
 
@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 userName = etUsername.getText().toString();
                 password = etPassword.getText().toString();
+
 
                 new loginCheckTask(userName,password,activity).execute(new apiConnectorDB());
             }

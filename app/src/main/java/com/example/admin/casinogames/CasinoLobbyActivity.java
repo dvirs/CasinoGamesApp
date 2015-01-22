@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.admin.casinogames.UtilClass.MyAdapter;
 import com.example.admin.casinogames.UtilClass.User;
-import com.example.admin.casinogames.com.example.admin.Tasks.TopUsersTask;
+import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
 
 import java.util.ArrayList;
 
@@ -111,7 +111,7 @@ public class CasinoLobbyActivity extends Activity {
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService((LAYOUT_INFLATER_SERVICE));
                 View popup = inflater.inflate(R.layout.popup_high_score, null);
                 final PopupWindow popupWindow = new PopupWindow(popup, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
-                usersList = (ListView) findViewById(R.id.user_list);
+                usersList = (ListView) popup.findViewById(R.id.user_list);
 
 
                 Button close = (Button) popup.findViewById(R.id.close_btn);

@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.admin.casinogames.com.example.admin.Tasks.InsertUserTask;
+import com.example.admin.casinogames.com.example.admin.tasks.InsertUserTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
