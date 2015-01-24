@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="welcom_user">Hi, User</string>
     <string name="app_name">CasinoGame</string>
     <string name="action_settings">Settings</string>
     <string name="login">LOGIN</string>

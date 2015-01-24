@@ -17,7 +17,12 @@ import android.widget.TextView;
 
 import com.example.admin.casinogames.UtilClass.MyAdapter;
 import com.example.admin.casinogames.UtilClass.User;
+import com.example.admin.casinogames.UtilClass.apiConnectorDB;
 import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
+import com.example.admin.casinogames.com.example.admin.tasks.logoutTask;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 
@@ -58,15 +63,20 @@ public class CasinoLobbyActivity extends Activity {
         signInBtn = (Button) findViewById(R.id.sign_in_btn_lob);
         signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
         usersList = (ListView) findViewById(R.id.user_list);
+
     }
 
     private void setComponentVisability(Bundle bund) {
         if(bund == null) {
+            userNameTxt.setText(R.string.welcom_user);
+            totalMoneyTxt.setText("");
             cubes_btn.setVisibility(View.INVISIBLE);
             poker_btn.setVisibility(View.INVISIBLE);
             settingsBtn.setVisibility(View.INVISIBLE);
             highScoreBtn.setVisibility(View.INVISIBLE);
             logoutBtn.setVisibility(View.INVISIBLE);
+            signInBtn.setVisibility(View.VISIBLE);
+            signUpBtn.setVisibility(View.VISIBLE);
         }
         else {
             cubes_btn.setVisibility(View.VISIBLE);
@@ -104,7 +114,16 @@ public class CasinoLobbyActivity extends Activity {
                 CasinoLobbyActivity.this.startActivity(i);
             }
         });
-
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setComponentVisability(null);
+                ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
+                user.add(new BasicNameValuePair("id",""+userInfo.get(0)));
+                user.add(new BasicNameValuePair("state",""+null));
+                new logoutTask(user).execute(new apiConnectorDB());
+            }
+        });
         highScoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +156,12 @@ public class CasinoLobbyActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(userInfo != null) {
+            ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
+            user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
+            user.add(new BasicNameValuePair("state", "" + null));
+            new logoutTask(user).execute(new apiConnectorDB());
+        }
 
     }
 

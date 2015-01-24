@@ -1,4 +1,4 @@
-package com.example.admin.casinogames;
+package com.example.admin.casinogames.UtilClass;
 
 import android.util.Log;
 
@@ -19,17 +19,31 @@ import java.util.ArrayList;
  */
 public class apiConnectorDB {
 
+    public Boolean setUserLoggedIn(ArrayList<NameValuePair> user){
+        String url = "http://omriglam.netau.net/setUserLogged.php";
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(new UrlEncodedFormEntity(user));
+            httpClient.execute(httpPost);
+
+
+            Log.e("Debug", "connected User user looged in!");
+        } catch (Exception e) {
+            Log.e("Debug","Didnt connected! " + e.toString());
+            return false;
+        }
+        return true;
+    }
+
     public Boolean InsertUser(ArrayList<NameValuePair> list){
         String url = "http://omriglam.netau.net/insert_user.php";
-        HttpEntity httpEntity= null;
-        InputStream is = null;
+
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new UrlEncodedFormEntity(list));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            httpEntity = httpResponse.getEntity();
-
+            httpClient.execute(httpPost);
 
             Log.e("Debug", "connected insert User!");
         } catch (Exception e) {

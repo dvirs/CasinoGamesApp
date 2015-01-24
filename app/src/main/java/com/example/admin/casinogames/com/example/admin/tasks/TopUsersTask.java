@@ -1,13 +1,10 @@
 package com.example.admin.casinogames.com.example.admin.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.admin.casinogames.CasinoLobbyActivity;
-import com.example.admin.casinogames.R;
 import com.example.admin.casinogames.UtilClass.User;
-import com.example.admin.casinogames.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.apiConnectorDB;
 
 import org.json.JSONArray;
 import org.json.JSONException;
