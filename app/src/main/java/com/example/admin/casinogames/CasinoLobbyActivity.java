@@ -146,6 +146,14 @@ public class CasinoLobbyActivity extends Activity {
 
             }
         });
+        cubes_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CasinoLobbyActivity.this,DiceGameActivity.class);
+                i.putExtra("user_info",userInfo);
+                CasinoLobbyActivity.this.startActivity(i);
+            }
+        });
 
     }
     public void setUsersArray(ArrayList<User> topUsers){
