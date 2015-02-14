@@ -45,7 +45,8 @@
     <string name="sign_successful">\"SignUp successful\"</string>
     <string name="top_10">Top 10 players</string>
     <string name="dice_result_txt">Dice Result</string>
-    <string name="bet_on_txt">Bet On:</string>
+    <string name="bet_on_txt">Bet:</string>
+    <string name="bet_money">0$</string>
     <string name="title_activity_dice_game">DiceGameActivity</string>
 
 </resources>

@@ -42,10 +42,12 @@ public class CasinoLobbyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_casino_lobby);
 
-        setViewOfFields();
+
         Intent intent = getIntent();
         bund = intent.getExtras();
 
+
+        setViewOfFields();
         setComponentVisability(bund);
         setButtonClickable();
 
@@ -93,8 +95,6 @@ public class CasinoLobbyActivity extends Activity {
 
         }
     }
-
-
 
     private void setButtonClickable() {
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,17 +150,19 @@ public class CasinoLobbyActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(CasinoLobbyActivity.this,DiceGameActivity.class);
-                i.putExtra("user_info",userInfo);
+                i.putExtra("userinfo",userInfo);
                 CasinoLobbyActivity.this.startActivity(i);
             }
         });
 
     }
+
     public void setUsersArray(ArrayList<User> topUsers){
         MyAdapter adapter = new MyAdapter(this,topUsers);
         usersList.setAdapter(adapter);
 
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

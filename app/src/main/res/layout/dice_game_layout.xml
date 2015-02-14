@@ -43,7 +43,7 @@
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
+        android:id="@+id/money_sk"
         android:layout_below="@+id/die2"
         android:layout_alignLeft="@+id/die2"
         android:layout_alignStart="@+id/die2"
@@ -58,12 +58,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/bet_on_txt"
         android:id="@+id/bet_txt"
-        android:layout_alignBottom="@+id/seekBar"
+        android:layout_alignBottom="@+id/money_sk"
         android:layout_alignLeft="@+id/die1"
         android:layout_alignStart="@+id/die1"
-        android:layout_alignRight="@+id/die1"
-        android:layout_alignEnd="@+id/die1"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:layout_toStartOf="@+id/dice_title_txt"
+        android:layout_alignTop="@+id/money_sk" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,24 +79,38 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/sum_spinner"
         android:layout_alignTop="@+id/dice_result_txt"
-        android:layout_alignLeft="@+id/seekBar"
-        android:layout_alignStart="@+id/seekBar"
+        android:layout_alignLeft="@+id/money_sk"
+        android:layout_alignStart="@+id/money_sk"
         android:spinnerMode="dropdown"
         android:entries="@array/dice_sum_array"
         android:prompt="@string/dice_prompt"
-        android:layout_alignRight="@+id/seekBar"
-        android:layout_alignEnd="@+id/seekBar" />
+        android:layout_alignRight="@+id/money_sk"
+        android:layout_alignEnd="@+id/money_sk" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Place Bet"
-        android:id="@+id/betBtn"
+        android:id="@+id/bet_btn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/bet_txt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/bet_money"
+        android:text="@string/bet_money"
+        android:textColor="#ffffffff"
+        android:layout_alignTop="@+id/bet_txt"
+        android:layout_alignRight="@+id/die1"
+        android:layout_alignEnd="@+id/die1"
+        android:layout_alignBottom="@+id/bet_txt"
+        android:layout_toRightOf="@+id/bet_txt"
+        android:layout_toEndOf="@+id/bet_txt" />
 
 </RelativeLayout>
