@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,6 +58,12 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 int bet = seekBar.getProgress();
                 String sumChoise = spinner.getSelectedItem().toString();
+                if((bet != 0) && (sumChoise != null)) {
+                    Log.e("debug", "bet button clicked");
+                }
+                else {
+                    Log.e("debug", "no all field full");
+                }
 
             }
         });
