@@ -77,6 +77,7 @@
         android:layout_alignStart="@+id/bet_txt" />
 
     <Spinner
+        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sum_spinner"
@@ -87,7 +88,9 @@
         android:entries="@array/dice_sum_array"
         android:prompt="@string/dice_prompt"
         android:layout_alignRight="@+id/money_sk"
-        android:layout_alignEnd="@+id/money_sk" />
+        android:layout_alignEnd="@+id/money_sk"
+        android:background="#ff000000"
+        android:longClickable="false" />
 
     <Button
         android:layout_width="wrap_content"

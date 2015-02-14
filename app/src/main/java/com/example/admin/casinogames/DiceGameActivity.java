@@ -2,11 +2,14 @@ package com.example.admin.casinogames;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +17,16 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class DiceGameActivity extends Activity implements SensorEventListener {
+    private static final int UPDATE_DELAY = 50;
+    private static final int SHAKE_THRESHOLD = 800;
+
     private Sensor acceleromter;
     private SensorManager sm;
     private ImageView dice1;
@@ -29,6 +37,18 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     private Button placeBetBtn;
     private Bundle bundle;
     private ArrayList userInfo;
+
+    private final int rollAnimations = 50;
+    private final int delayTime = 15;
+    private Resources res;
+    private final int[] diceImages = new int[]{R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five, R.drawable.six};
+    private Drawable dice[] = new Drawable[6];
+    private final Random randomGen = new Random();
+    private int diceSum;
+    private int roll[] = new int[]{6, 6};
+    private ImageView die1;
+    private ImageView die2;
+    private Handler animationHandler;
 
 
     @Override
@@ -41,13 +61,14 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         userInfo = (ArrayList) bundle.get("userinfo");
 
         setViewOfFields();
-
         setButtonClickable();
+
 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
         acceleromter = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        boolean register = sm.registerListener(this,acceleromter,SensorManager.SENSOR_DELAY_NORMAL);
-        if(!register) sm.unregisterListener(this);
+        boolean resultRegister = sm.registerListener(this,acceleromter,SensorManager.SENSOR_DELAY_NORMAL);
+        if(!resultRegister) sm.unregisterListener(this); //NO accelerometer on this device
+        rollDice();
 
 
     }
@@ -58,11 +79,14 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 int bet = seekBar.getProgress();
                 String sumChoise = spinner.getSelectedItem().toString();
-                if((bet != 0) && (sumChoise != null)) {
-                    Log.e("debug", "bet button clicked");
+                if((bet != 0)) {
+                //play sensor
+
+
                 }
                 else {
-                    Log.e("debug", "no all field full");
+                    Toast.makeText(DiceGameActivity.this,R.string.bet_error,Toast.LENGTH_SHORT).show();
+
                 }
 
             }
