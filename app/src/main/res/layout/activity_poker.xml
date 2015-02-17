@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background = "@drawable/table"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:id="@+id/cards"
+        android:background="@drawable/cards"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/user_card1"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/user_card2"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/flop_card1"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/flop_card2"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/flop_card3"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/flop_card4"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/flop_card5"
+        android:layout_gravity="center_horizontal|top" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play"
+        android:id="@+id/play"
+        android:layout_gravity="right|bottom" />
+
+    <SeekBar
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/money_poker"
+        android:layout_gravity="center_horizontal|bottom" />
+
+    <TextView
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Bet:"
+        android:id="@+id/bet_poker_txt"
+        android:layout_gravity="left|bottom" />
+
+
+</FrameLayout>

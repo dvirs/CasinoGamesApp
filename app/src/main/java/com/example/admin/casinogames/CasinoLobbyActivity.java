@@ -66,6 +66,7 @@ public class CasinoLobbyActivity extends Activity {
         signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
         usersList = (ListView) findViewById(R.id.user_list);
 
+
     }
 
     private void setComponentVisability(Bundle bund) {
@@ -151,6 +152,15 @@ public class CasinoLobbyActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(CasinoLobbyActivity.this,DiceGameActivity.class);
                 i.putExtra("userinfo",userInfo);
+                CasinoLobbyActivity.this.startActivity(i);
+            }
+        });
+
+        poker_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CasinoLobbyActivity.this, PokerActivity.class);
+                i.putExtra("userinfo", userInfo);
                 CasinoLobbyActivity.this.startActivity(i);
             }
         });
