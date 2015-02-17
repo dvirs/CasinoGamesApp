@@ -3,6 +3,7 @@ package com.example.admin.casinogames;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +55,7 @@ public class MainActivity extends Activity {
                 userName = etUsername.getText().toString();
                 password = etPassword.getText().toString();
 
-
+                Log.e("ssss","sign in");
                 new loginCheckTask(userName,password,activity).execute(new apiConnectorDB());
             }
         });

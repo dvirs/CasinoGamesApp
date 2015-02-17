@@ -89,7 +89,7 @@
         android:prompt="@string/dice_prompt"
         android:layout_alignRight="@+id/money_sk"
         android:layout_alignEnd="@+id/money_sk"
-        android:background="#ff000000"
+        android:background="#ffffffff"
         android:longClickable="false" />
 
     <Button
