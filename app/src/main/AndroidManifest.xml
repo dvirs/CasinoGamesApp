@@ -39,6 +39,11 @@
             android:label="@string/title_activity_dice_game"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name=".PokerActivity"
+            android:label="@string/title_activity_poker"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>
