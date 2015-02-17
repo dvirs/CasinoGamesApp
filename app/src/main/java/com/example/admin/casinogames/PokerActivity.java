@@ -1,5 +1,6 @@
 package com.example.admin.casinogames;
 
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -95,31 +96,23 @@ public class PokerActivity extends Activity {
                 if(couter == 1) {
                     //flip user cards
                     for (int i = 0; i < NUM_USER_CARDS; i++) {
-                        card = flipCard(userCards.get(i));
-                        userCards.get(i).setImageResource(allCards.get(card));
-
+                        flipCard(userCards.get(i));
                     }
                 }
 
                 else if(couter == 2) {
                     //flip flop cards
                     for(int i = 0; i < 3; i++) {
-                        card = flipCard(flopCards.get(i));
-                        flopCards.get(i).setImageResource(allCards.get(card));
-
+                        flipCard(flopCards.get(i));
                     }
                 }
 
                 else if(couter == 3) {
-                    card = flipCard(flopCards.get(3));
-                    flopCards.get(3).setImageResource(allCards.get(card));
-
+                    flipCard(flopCards.get(3));
                 }
 
                 else if(couter == 4) {
-                    card = flipCard(flopCards.get(4));
-                    flopCards.get(4).setImageResource(allCards.get(card));
-
+                    flipCard(flopCards.get(4));
                 }
 
                 else{
@@ -175,9 +168,13 @@ public class PokerActivity extends Activity {
             card = random.nextInt(allCards.size());
 
             for(int i = 0; i < userCards.size(); i++) {
-                Log.e("debug", "card = " + card + " b = " + userCards.get(i).getDrawable() + " r = "
-                        + allCards.get(card) + " d = " + userCards.get(i).getDrawable());
-                if(userCards.get(i).getDrawable() == getResources().getDrawable(allCards.get(card))) {
+                Log.e("debug", "card = " + card +
+                        " r = " + allCards.get(card) +
+                        " a = " + getResources().getResourceName(allCards.get(card)) +
+                        " b = " + userCards.get(i).getDrawable() +
+                        " d = " + userCards.get(i).getResources() +
+                        " c = " + getDrawable(allCards.get(card)));
+                if(getDrawable(allCards.get(card)) == userCards.get(i).getDrawable()) {
                     flag1 = true;
                 }
             }
@@ -192,16 +189,35 @@ public class PokerActivity extends Activity {
         }
     }
 
-    private synchronized int flipCard(ImageView imageView) {
+
+    private void flipCard(final ImageView imageView) {
         ObjectAnimator flip = (ObjectAnimator) AnimatorInflater.loadAnimator(PokerActivity.this,
                 animationFlopIds[animationFlopIds.length - 1]);
-        int card = randomCard();
+        final int card = randomCard();
         flip.setTarget(imageView);
         flip.setDuration(5000);
-        flip.start();
-        return card;
-//        imageView.setImageResource(allCards.get(card));
+        flip.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                imageView.setImageResource(allCards.get(card));
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        flip.start();
     }
 
     @Override
