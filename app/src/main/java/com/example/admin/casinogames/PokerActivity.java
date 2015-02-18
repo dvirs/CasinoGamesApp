@@ -161,32 +161,24 @@ public class PokerActivity extends Activity {
     }
 
     private int randomCard() {
-        int card = -1;
-        boolean flag1 = false, flag2 = false;
         Random random = new Random();
-        while (true) {
-            card = random.nextInt(allCards.size());
+        int card = random.nextInt(allCards.size());
+        boolean flag = true;
 
-            for(int i = 0; i < userCards.size(); i++) {
-                Log.e("debug", "card = " + card +
-                        " r = " + allCards.get(card) +
-                        " a = " + getResources().getResourceName(allCards.get(card)) +
-                        " b = " + userCards.get(i).getDrawable() +
-                        " d = " + userCards.get(i).getResources() +
-                        " c = " + getDrawable(allCards.get(card)));
-                if(getDrawable(allCards.get(card)) == userCards.get(i).getDrawable()) {
-                    flag1 = true;
-                }
-            }
-            for(int i = 0; i < flopCards.size()-1; i++) {
-                if(flopCards.get(i).getBackground() == getResources().getDrawable(allCards.get(card))) {
-                    flag2 = true;
-                }
-            }
-            if((flag1 == false) && (flag2 == false)) {
-                return card;
-            }
+        if(allCards.get(card) == -100) {
+            flag = true;
         }
+        while (flag) {
+            card = random.nextInt(allCards.size());
+            if(allCards.get(card) == -100) {
+                flag = true;
+            }
+            else {
+                flag = false;
+            }
+
+        }
+        return card;
     }
 
 
@@ -205,6 +197,7 @@ public class PokerActivity extends Activity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 imageView.setImageResource(allCards.get(card));
+                allCards.set(card, -100);
             }
 
             @Override
