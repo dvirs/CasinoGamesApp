@@ -9,8 +9,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +23,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.com.example.admin.tasks.updateUserTotalMoneyTask;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static java.lang.Thread.sleep;
 
 
 public class DiceGameActivity extends Activity implements SensorEventListener {
@@ -31,7 +41,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     private static final int SHAKE_THRESHOLD = 800;
     private final int rollAnimations = 50;
     private final int delayTime = 15;
-
+    private DiceGameActivity thisActivity = this;
     private Sensor acceleromter;
     private SensorManager sm;
     private ImageView dice1;
@@ -54,8 +64,10 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     private int diceSum;
     private int roll[] = new int[]{6, 6};
     private Handler animationHandler;
-    private int count = 0;
-
+    private int count = 1;
+    private int bet;
+    private String sumChoise;
+    private boolean won = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,20 +104,85 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < rollAnimations; i++) {
+                for (int i = 0; i < rollAnimations; i++)
                     doRoll();
-                }
             }
         }).start();
+
+
+
+
         MediaPlayer mp = MediaPlayer.create(DiceGameActivity.this ,R.raw.roll);
         try {
             mp.prepare();
+
         }catch (IllegalStateException e) {
             e.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
         }
+
         mp.start();
+        Thread cheack = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                try{
+                    sleep(2000);
+
+                }catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                checkIfUserWon();
+            }
+        });
+        cheack.start();
+
+
+
+
+
+
+    }
+    private void checkIfUserWon(){
+        int newTotalMoney ;
+
+        Log.e("debug","Befor if CheckifWon");
+        if(diceSum == Integer.parseInt(sumChoise)){
+            Log.e("debug","inside the if ");
+            won = true;
+            newTotalMoney = (int) userInfo.get(4) +  bet * 2;
+        }else{
+            won = false;
+            newTotalMoney = (int) userInfo.get(4) -  bet ;
+
+        }
+        userInfo.set(4,newTotalMoney);
+        ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
+        userInfoArray.add(new BasicNameValuePair("id", userInfo.get(0).toString()));
+        userInfoArray.add(new BasicNameValuePair("totalmoney",""+newTotalMoney));
+
+        seekBar.setMax(newTotalMoney);
+
+        new updateUserTotalMoneyTask(userInfoArray).execute(new apiConnectorDB());
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(won){
+                    Toast.makeText(DiceGameActivity.this,"You Won Congratulations!",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(DiceGameActivity.this,"Ohhh Bad Luck, You Lost!!",Toast.LENGTH_LONG).show();
+                }
+                placeBetBtn.setClickable(true);
+                seekBar.setClickable(true);
+                seekBar.setEnabled(true);
+                spinner.setClickable(true);
+                spinner.setEnabled(true);
+            }
+        });
+
     }
 
     private void doRoll() {
@@ -116,7 +193,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             animationHandler.sendEmptyMessage(0);
         }
         try { // delay to alloy for smooth animation
-            Thread.sleep(delayTime);
+            sleep(delayTime);
         } catch (final InterruptedException e) {
             e.printStackTrace();
         }
@@ -126,12 +203,17 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         placeBetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int bet = seekBar.getProgress();
-                String sumChoise = spinner.getSelectedItem().toString();
+                bet = seekBar.getProgress();
+
                 if((bet != 0)) {
-                //play sensor
-
-
+                    Toast.makeText(DiceGameActivity.this,"Shack The Phone",Toast.LENGTH_SHORT).show();
+                    sumChoise = spinner.getSelectedItem().toString();
+                    seekBar.setClickable(false);
+                    seekBar.setEnabled(false);
+                    spinner.setClickable(false);
+                    spinner.setEnabled(false);
+                    placeBetBtn.setClickable(false);
+                    count = 0;
                 }
                 else {
                     Toast.makeText(DiceGameActivity.this,R.string.bet_error,Toast.LENGTH_SHORT).show();
@@ -145,6 +227,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 betMoney.setText(progress+"$");
+
             }
 
             @Override
@@ -172,7 +255,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.e("ddddddddddd","the pphone moved");
+        //Log.e("ddddddddddd","the pphone moved");
         Sensor mySensor = event.sensor;
         long curTime = System.currentTimeMillis();
             if ((curTime - lastUpdate) > UPDATE_DELAY) {
@@ -182,9 +265,10 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
                 y = event.values[SensorManager.DATA_Y];
                 z = event.values[SensorManager.DATA_Z];
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-                Log.e("ddddddddddd",speed +" - "+ SHAKE_THRESHOLD);
-                if (speed > SHAKE_THRESHOLD) { //the screen was shaked
+
+                if (speed > SHAKE_THRESHOLD && count == 0) { //the screen was shaked and only one roll
                     rollDice();
+                    count=1;
                 }
                 last_x = x;
                 last_y = y;

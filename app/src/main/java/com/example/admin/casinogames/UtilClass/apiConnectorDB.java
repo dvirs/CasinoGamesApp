@@ -35,7 +35,23 @@ public class apiConnectorDB {
         }
         return true;
     }
+    public Boolean UpdateUserMoney(ArrayList<NameValuePair> list){
+        String url = "http://omriglam.netau.net/update_money.php";
 
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(new UrlEncodedFormEntity(list));
+            httpClient.execute(httpPost);
+
+            Log.e("Debug", "connected Update User Money!");
+        } catch (Exception e) {
+            Log.e("Debug","Didnt connected! " + e.toString());
+            return false;
+        }
+
+        return true;
+    }
     public Boolean InsertUser(ArrayList<NameValuePair> list){
         String url = "http://omriglam.netau.net/insert_user.php";
 
