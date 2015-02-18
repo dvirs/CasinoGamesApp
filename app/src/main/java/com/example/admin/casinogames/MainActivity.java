@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
                 password = etPassword.getText().toString();
 
                 new loginCheckTask(userName,password,activity).execute(new apiConnectorDB());
-               
+
             }
         });
     }
