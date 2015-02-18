@@ -81,5 +81,17 @@
         android:id="@+id/bet_poker_txt"
         android:layout_gravity="left|bottom" />
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/dealer_card1"
+        android:layout_gravity="center_horizontal|top" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/dealer_card2"
+        android:layout_gravity="center_horizontal|top" />
+
 
 </FrameLayout>

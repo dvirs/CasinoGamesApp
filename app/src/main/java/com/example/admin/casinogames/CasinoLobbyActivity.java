@@ -3,6 +3,8 @@ package com.example.admin.casinogames;
 import android.app.ActionBar;
 import android.app.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,12 +38,12 @@ public class CasinoLobbyActivity extends Activity {
     private ArrayList userInfo;
     private ListView usersList;
     private CasinoLobbyActivity activity;
-
+    private Bundle saveState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_casino_lobby);
-
+        saveState = savedInstanceState;
 
         Intent intent = getIntent();
         bund = intent.getExtras();
@@ -104,6 +106,7 @@ public class CasinoLobbyActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(CasinoLobbyActivity.this, MainActivity.class);
                 CasinoLobbyActivity.this.startActivity(i);
+
             }
         });
 
@@ -113,6 +116,7 @@ public class CasinoLobbyActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(CasinoLobbyActivity.this, RegisterActivity.class);
                 CasinoLobbyActivity.this.startActivity(i);
+
             }
         });
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,14 +179,53 @@ public class CasinoLobbyActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if(userInfo != null) {
-            ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
-            user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
-            user.add(new BasicNameValuePair("state", "" + null));
-            new logoutTask(user).execute(new apiConnectorDB());
+        //
+
+        if(bund == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CasinoLobbyActivity.this);
+            builder.setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            CasinoLobbyActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                        }
+                    });
+            builder.create();
+            builder.show();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CasinoLobbyActivity.this);
+            builder.setMessage("Are you sure you want to Logout?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            setComponentVisability(null);
+                            logout();
+                            bund=null;
+
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                        }
+                    });
+            builder.create();
+            builder.show();
         }
 
+    }
+
+    private void logout() {
+        ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
+        user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
+        user.add(new BasicNameValuePair("state", "" + null));
+        new logoutTask(user).execute(new apiConnectorDB());
     }
 
     @Override

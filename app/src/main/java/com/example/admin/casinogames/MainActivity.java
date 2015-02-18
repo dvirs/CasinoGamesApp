@@ -55,8 +55,8 @@ public class MainActivity extends Activity {
                 userName = etUsername.getText().toString();
                 password = etPassword.getText().toString();
 
-                Log.e("ssss","sign in");
                 new loginCheckTask(userName,password,activity).execute(new apiConnectorDB());
+               
             }
         });
     }
