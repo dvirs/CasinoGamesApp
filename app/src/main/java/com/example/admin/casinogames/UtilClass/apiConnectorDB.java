@@ -91,7 +91,7 @@ public class apiConnectorDB {
         if(httpEntity != null){
             try{
                 String entityResponse = EntityUtils.toString(httpEntity);
-                Log.e("Debug","httpEntity is not empty: \n"+entityResponse);
+           //     Log.e("Debug","httpEntity is not empty: \n"+entityResponse);
                 jsonArray = new JSONArray(entityResponse);
             }catch (Exception e){
                 e.printStackTrace();

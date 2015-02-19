@@ -92,7 +92,7 @@ public class PokerActivity extends Activity {
 
     private void setViewOfFields() {
         cards = (ImageView) findViewById(R.id.cards);
-        bet = (Button) findViewById(R.id.play);
+        bet = (Button) findViewById(R.id.playBtn);
         moneySk = (SeekBar) findViewById(R.id.money_poker);
         betMoney = (TextView) findViewById(R.id.bet_poker_txt);
     }

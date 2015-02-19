@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,8 +77,8 @@ public class RegisterActivity extends Activity {
     public void signInSuccessful() {
         //successful Sign in, move to next activity
         Toast.makeText(this,R.string.sign_successful,Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(this, MainActivity.class);
+        ActivityCompat.finishAffinity(this);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
 

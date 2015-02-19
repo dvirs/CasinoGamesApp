@@ -9,7 +9,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -72,7 +71,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dice_game_layout);
+        setContentView(R.layout.activity_dice_game);
 
         Intent intent = getIntent();
         bundle = intent.getExtras();
@@ -148,7 +147,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     private void checkIfUserWon(){
         int newTotalMoney ;
 
-        Log.e("debug","Befor if CheckifWon");
+        Log.e("debug", "Befor if CheckifWon");
         if(diceSum == Integer.parseInt(sumChoise)){
             Log.e("debug","inside the if ");
             won = true;

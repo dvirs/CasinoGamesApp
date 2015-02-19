@@ -3,7 +3,7 @@ package com.example.admin.casinogames;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,7 @@ import com.example.admin.casinogames.com.example.admin.tasks.loginCheckTask;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
     private static final String DEBUG = "Debug" ;
 
     private String userName;
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private Button signIn_btn;
     private EditText etUsername,etPassword;
     private TextView wrongInput;
-    private MainActivity activity;
+    private LoginActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
 
     public void loginResult(ArrayList<String> userInfo) {
         if(userInfo != null){
+            ActivityCompat.finishAffinity(this);
             Intent intent = new Intent(this, CasinoLobbyActivity.class);
             intent.putExtra("userinfo",userInfo);
             startActivity(intent);

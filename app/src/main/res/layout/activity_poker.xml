@@ -60,27 +60,6 @@
         android:id="@+id/flop_card5"
         android:layout_gravity="center_horizontal|top" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="play"
-        android:id="@+id/play"
-        android:layout_gravity="right|bottom" />
-
-    <SeekBar
-        android:layout_width="235dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/money_poker"
-        android:layout_gravity="center_horizontal|bottom" />
-
-    <TextView
-        android:layout_width="169dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Bet:"
-        android:id="@+id/bet_poker_txt"
-        android:layout_gravity="left|bottom" />
-
     <ImageView
         android:layout_width="30dp"
         android:layout_height="40dp"
@@ -92,6 +71,65 @@
         android:layout_height="40dp"
         android:id="@+id/dealer_card2"
         android:layout_gravity="center_horizontal|top" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|bottom">
+
+        <TextView
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Bet:"
+            android:id="@+id/bet_poker_txt"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginBottom="24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <SeekBar
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/money_poker"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_alignTop="@+id/bet_poker_txt"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="54dp"
+            android:layout_marginStart="54dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="play"
+            android:id="@+id/playBtn"
+            android:layout_gravity="right|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fold"
+            android:id="@+id/foldBtn"
+            android:layout_gravity="right|bottom"
+            android:layout_toLeftOf="@+id/checkBtn"
+            android:layout_toStartOf="@+id/checkBtn"
+            android:layout_alignTop="@+id/checkBtn" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check"
+            android:id="@+id/checkBtn"
+            android:layout_gravity="right|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/playBtn"
+            android:layout_toStartOf="@+id/playBtn" />
+    </RelativeLayout>
 
 
 </FrameLayout>

@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.example.admin.casinogames.UtilClass.MyAdapter;
 import com.example.admin.casinogames.UtilClass.User;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
 import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
+import com.example.admin.casinogames.com.example.admin.tasks.getUserTask;
 import com.example.admin.casinogames.com.example.admin.tasks.logoutTask;
 
 import org.apache.http.NameValuePair;
@@ -104,7 +106,7 @@ public class CasinoLobbyActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CasinoLobbyActivity.this, MainActivity.class);
+                Intent i = new Intent(CasinoLobbyActivity.this, LoginActivity.class);
                 CasinoLobbyActivity.this.startActivity(i);
 
             }
@@ -191,8 +193,7 @@ public class CasinoLobbyActivity extends Activity {
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
-
+                            dialog.cancel();
                         }
                     });
             builder.create();
@@ -218,6 +219,33 @@ public class CasinoLobbyActivity extends Activity {
             builder.create();
             builder.show();
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUser();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(userInfo != null) {
+            new getUserTask((int) userInfo.get(0), this).execute(new apiConnectorDB());
+        }
+    }
+
+    private void updateUser() {
+        if(userInfo != null) {
+            new getUserTask((int) userInfo.get(0), this).execute(new apiConnectorDB());
+        }
+    }
+
+    public void updateUserComponent(ArrayList userInfo){
+        this.userInfo = userInfo;
+        Log.e("de", "Found User!!! But didnt write");
+        totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
 
     }
 

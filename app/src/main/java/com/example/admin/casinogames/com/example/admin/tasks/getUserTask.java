@@ -2,45 +2,35 @@ package com.example.admin.casinogames.com.example.admin.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.admin.casinogames.LoginActivity;
+import com.example.admin.casinogames.CasinoLobbyActivity;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-
 /**
- * Created by omri on 22/01/2015.
+ * Created by omriGlam on 2/19/2015.
  */
+public class getUserTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
+    private int userID;
+    private CasinoLobbyActivity activity;
 
-public class loginCheckTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
-    private String userName,password;
-    private LoginActivity activity;
-
-    public loginCheckTask(String userName, String password, LoginActivity loginActivity) {
-        this.userName = userName;
-        this.password = password;
-        this.activity = loginActivity;
-
+    public getUserTask(int userID,CasinoLobbyActivity activity){
+        this.userID = userID;
+        this.activity = activity;
     }
 
     @Override
-    public ArrayList<String> doInBackground(apiConnectorDB... params) {
+    protected ArrayList doInBackground(apiConnectorDB... params) {
         JSONArray jsonArray = params[0].getAllUsers();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = null;
                 try {
                     json = jsonArray.getJSONObject(i);
-                    if ((json.getString("username").equals(userName) || json.getString("email").equals(userName)) && json.getString("password").equals(password)) {
+                    if (json.getString("id").equals(userID+"")) {
 
-                        if (json.getInt("connected") == 0) {
-                            //Create an Arraylist To pass The loged user info
+                            Log.e("de","Found User!!!");
                             ArrayList userInfo = new ArrayList();
                             try {
                                 userInfo.add(json.getInt("id"));
@@ -49,27 +39,23 @@ public class loginCheckTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
                                 userInfo.add(json.getString("password"));
                                 userInfo.add(json.getInt("totalmoney"));
 
-                                ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
-                                user.add(new BasicNameValuePair("id",""+json.getInt("id")));
-                                user.add(new BasicNameValuePair("state",""+1));
-                                if(!params[0].setUserLoggedIn(user)) return null;
-
                             } catch (Exception e) {
                                 Log.e("Debug", "Didnt parse the Json to ArryList");
                             }
                             return userInfo;
                         }
-                    }
                 } catch (Exception e) {
                     Log.e("Debug", "Faild getting the Json Object");
                 }
             }
         }
+        Log.e("de","Didnt Found User!!!");
         return null;
     }
 
     @Override
-    public void onPostExecute(ArrayList userInfo) {
-        activity.loginResult(userInfo);
+    protected void onPostExecute(ArrayList arrayList) {
+
+        if(arrayList!=null) activity.updateUserComponent(arrayList);
     }
 }
