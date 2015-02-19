@@ -1,6 +1,8 @@
 package com.example.admin.casinogames;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -250,6 +252,25 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         spinner = (Spinner) findViewById(R.id.sum_spinner);
         placeBetBtn = (Button) findViewById(R.id.bet_btn);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(DiceGameActivity.this);
+            builder.setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DiceGameActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            builder.create();
+            builder.show();
     }
 
     @Override
