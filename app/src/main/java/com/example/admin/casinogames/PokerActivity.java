@@ -34,7 +34,7 @@ public class PokerActivity extends Activity {
     private int couter = 0; //count number of clicks on bet button
 
     private ImageView cards;
-    private Button bet;
+    private Button betBtn,foldBtn,checkBtn;
     private SeekBar moneySk;
     private TextView betMoney;
 
@@ -67,8 +67,9 @@ public class PokerActivity extends Activity {
     private ArrayList<ImageView> flopCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> dealerCards = new ArrayList<ImageView>();
     private ArrayList userInfo;
-
     private Animation translate;
+
+    private int totalBetMoney = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,56 +86,73 @@ public class PokerActivity extends Activity {
 
         moneySk.setVisibility(View.INVISIBLE);
         betMoney.setVisibility(View.INVISIBLE);
-        moneySk.setMax((int) userInfo.get(4)); //set total money for max bet
+        checkBtn.setVisibility(View.INVISIBLE);
+        foldBtn.setVisibility(View.INVISIBLE);
+
+        moneySk.setMax((int) userInfo.get(4)); //set total money for max
 
 
     }
 
     private void setViewOfFields() {
         cards = (ImageView) findViewById(R.id.cards);
-        bet = (Button) findViewById(R.id.playBtn);
+        betBtn = (Button) findViewById(R.id.playBtn);
+        foldBtn = (Button) findViewById(R.id.foldBtn);
+        checkBtn = (Button) findViewById(R.id.checkBtn);
         moneySk = (SeekBar) findViewById(R.id.money_poker);
         betMoney = (TextView) findViewById(R.id.bet_poker_txt);
     }
 
     private void setButtonClickable() {
 
-        bet.setOnClickListener(new View.OnClickListener() {
+        betBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 couter++;
-                moneySk.setVisibility(View.VISIBLE);
-                betMoney.setVisibility(View.VISIBLE);
-                bet.setText("Bet");
 
-                if(couter == 1) {
+
+                if (couter == 1) {
+                    moneySk.setVisibility(View.VISIBLE);
+                    betMoney.setVisibility(View.VISIBLE);
+                    betBtn.setText("Bet");
+                    foldBtn.setVisibility(View.VISIBLE);
+
                     //flip user cards
                     for (int i = 0; i < NUM_USER_CARDS; i++) {
                         flipCard(userCards.get(i));
                     }
-                }
 
-                else if(couter == 2) {
+                } else if (couter == 2) {
+                    moneySk.setEnabled(false);
+                    totalBetMoney = moneySk.getProgress();
                     //flip flop cards
-                    for(int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 3; i++) {
                         flipCard(flopCards.get(i));
                     }
-                }
 
-                else if(couter == 3) {
+                    moneySk.setEnabled(true);
+                    checkBtn.setVisibility(View.VISIBLE);
+
+
+
+                } else if (couter == 3) {
                     flipCard(flopCards.get(3));
-                }
-
-                else if(couter == 4) {
+                } else if (couter == 4) {
                     flipCard(flopCards.get(4));
-                }
-
-                else{
+                } else if (couter == 5){
 
                 }
             }
 
+        });
+        foldBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    // new Deal
+
+            }
         });
 
         moneySk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -212,6 +230,7 @@ public class PokerActivity extends Activity {
             public void onAnimationRepeat(Animator animation) {
 
             }
+
         });
         flip.start();
     }
