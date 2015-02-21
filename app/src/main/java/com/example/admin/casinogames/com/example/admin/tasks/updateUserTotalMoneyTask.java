@@ -17,11 +17,9 @@ import java.util.ArrayList;
  */
 public class updateUserTotalMoneyTask extends AsyncTask<apiConnectorDB,Long,Boolean> {
     private ArrayList<NameValuePair> userInfoArray;
-    private RegisterActivity activity;
 
     public updateUserTotalMoneyTask(ArrayList<NameValuePair> userInfoArray) {
         this.userInfoArray = userInfoArray;
-        this.activity = activity;
     }
 
     @Override

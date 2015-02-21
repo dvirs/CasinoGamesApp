@@ -70,6 +70,7 @@ public class PokerActivity extends Activity {
     private Animation translate;
     private TextView betTV;
     private int totalBetMoney = 0;
+    private int userTotalMoney;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class PokerActivity extends Activity {
         Intent intent = getIntent();
         bundle = intent.getExtras();
         userInfo = (ArrayList) bundle.get("userinfo");
+        userTotalMoney = (int) userInfo.get(4);
 
         setViewOfFields();
         dealer();
@@ -89,7 +91,7 @@ public class PokerActivity extends Activity {
         checkBtn.setVisibility(View.INVISIBLE);
         foldBtn.setVisibility(View.INVISIBLE);
 
-        moneySk.setMax((int) userInfo.get(4)); //set total money for max
+        moneySk.setMax(userTotalMoney); //set total money for max
 
 
     }
@@ -122,39 +124,42 @@ public class PokerActivity extends Activity {
                     }
 
                 } else if (couter == 2) {
-                    moneySk.setEnabled(false);
                     checkBtn.setVisibility(View.VISIBLE);
-                    totalBetMoney = moneySk.getProgress();
-                    betTV.setText(totalBetMoney+"$");
-                    moneySk.setMax((int) userInfo.get(4)-totalBetMoney);
+                    updateMoneyTextView();
 
                     //flip flop cards
                     for (int i = 0; i < 3; i++) {
                         flipCard(flopCards.get(i));
                     }
 
-                    moneySk.setEnabled(true);
-
-
-
-
                 } else if (couter == 3) {
-                    totalBetMoney += moneySk.getProgress();
+                    updateMoneyTextView();
                     flipCard(flopCards.get(3));
+
                 } else if (couter == 4) {
+                    updateMoneyTextView();
+
                     flipCard(flopCards.get(4));
                 } else if (couter == 5){
-
+                    updateMoneyTextView();
+                    //check if the user won
                 }
             }
 
         });
+
         foldBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                couter = 0;
 
-                    // new Deal
+                userTotalMoney -= totalBetMoney;
+                betTV.setText(0+"$");
+                moneySk.setMax(userTotalMoney);
 
+                foldBtn.setVisibility(View.INVISIBLE);
+                checkBtn.setVisibility(View.INVISIBLE);
+                dealer();
             }
         });
 
@@ -177,7 +182,11 @@ public class PokerActivity extends Activity {
 
 
     }
-
+    private void updateMoneyTextView(){
+        totalBetMoney += moneySk.getProgress();
+        moneySk.setMax(userTotalMoney-totalBetMoney);
+        betTV.setText(totalBetMoney+"$");
+    }
     private void dealer() {
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
@@ -211,7 +220,7 @@ public class PokerActivity extends Activity {
         final int card_index = randomCard();
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
-        flip.setDuration(5000);
+        flip.setDuration(4000);
         flip.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -282,7 +291,7 @@ public class PokerActivity extends Activity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PokerActivity.this);
-        builder.setMessage("Are you sure you want to exit?")
+        builder.setMessage("Are you sure you want to exit the Poker Game?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         PokerActivity.this.finish();

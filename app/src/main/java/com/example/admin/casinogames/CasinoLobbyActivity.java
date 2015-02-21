@@ -124,13 +124,12 @@ public class CasinoLobbyActivity extends Activity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setComponentVisability(null);
-                ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
-                user.add(new BasicNameValuePair("id",""+userInfo.get(0)));
-                user.add(new BasicNameValuePair("state",""+null));
-                new logoutTask(user).execute(new apiConnectorDB());
+                logout();
+
             }
         });
+
+
         highScoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,7 +246,7 @@ public class CasinoLobbyActivity extends Activity {
     }
 
     private void logout() {
-
+        setComponentVisability(null);
         ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
         user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
         user.add(new BasicNameValuePair("state", "" + null));
