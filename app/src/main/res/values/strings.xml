@@ -51,5 +51,7 @@
     <string name="bet_error"><![CDATA[Bet must be higer then -> 0]]></string>
     <string name="title_activity_pofer">PoferActivity</string>
     <string name="title_activity_poker">PokerActivity</string>
+    <string name="total_bet_title">Total bet:</string>
+    <string name="demo_money">0$</string>
 
 </resources>

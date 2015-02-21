@@ -87,7 +87,8 @@
             android:layout_marginBottom="24dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:textColor="#ff040404" />
 
         <SeekBar
             android:layout_width="235dp"
@@ -129,6 +130,28 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/playBtn"
             android:layout_toStartOf="@+id/playBtn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_bet_title"
+            android:id="@+id/total_bet_title"
+            android:layout_below="@+id/money_poker"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="#ff040404" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/demo_money"
+            android:id="@+id/betTV"
+            android:layout_below="@+id/money_poker"
+            android:layout_toRightOf="@+id/total_bet_title"
+            android:layout_toEndOf="@+id/total_bet_title"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            android:textColor="#ff040404" />
     </RelativeLayout>
 
 

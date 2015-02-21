@@ -181,9 +181,8 @@ public class CasinoLobbyActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        //
-
-        if(bund == null) {
+        //user is not connected
+        if(userInfo == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(CasinoLobbyActivity.this);
             builder.setMessage("Are you sure you want to exit?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -199,14 +198,14 @@ public class CasinoLobbyActivity extends Activity {
             builder.create();
             builder.show();
         }
-        else {
+        else {//user is connected
             AlertDialog.Builder builder = new AlertDialog.Builder(CasinoLobbyActivity.this);
             builder.setMessage("Are you sure you want to Logout?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             setComponentVisability(null);
                             logout();
-                            bund=null;
+
 
                         }
                     })
@@ -231,9 +230,7 @@ public class CasinoLobbyActivity extends Activity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(userInfo != null) {
-            new getUserTask((int) userInfo.get(0), this).execute(new apiConnectorDB());
-        }
+        updateUser();
     }
 
     private void updateUser() {
@@ -250,10 +247,12 @@ public class CasinoLobbyActivity extends Activity {
     }
 
     private void logout() {
+
         ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
         user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
         user.add(new BasicNameValuePair("state", "" + null));
         new logoutTask(user).execute(new apiConnectorDB());
+        userInfo = null;
     }
 
     @Override
