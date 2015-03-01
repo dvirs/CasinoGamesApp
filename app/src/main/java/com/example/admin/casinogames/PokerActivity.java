@@ -36,7 +36,7 @@ public class PokerActivity extends Activity {
     private ImageView cards;
     private Button betBtn,foldBtn,checkBtn;
     private SeekBar moneySk;
-    private TextView betMoney;
+    private TextView betMoney, totalBetTitle;
 
     private int[] viewUserIds = {R.id.user_card1, R.id.user_card2};
     private int[] viewDealerIds = {R.id.dealer_card1, R.id.dealer_card2};
@@ -48,19 +48,18 @@ public class PokerActivity extends Activity {
     private int[] animationFlopIds = {R.anim.translate_flop1, R.anim.translate_flop2,
             R.anim.translate_flop3, R.anim.translate_flop4, R.anim.translate_flop5, R.anim.flip};
 
-    private ArrayList<Integer> allCards = new ArrayList(Arrays.asList(R.drawable.heart_a,
+    private ArrayList<Integer> allCards = new ArrayList(Arrays.asList(
             R.drawable.heart_2, R.drawable.heart_3, R.drawable.heart_4, R.drawable.heart_5,
             R.drawable.heart_6, R.drawable.heart_7, R.drawable.heart_8, R.drawable.heart_9,
-            R.drawable.heart_10, R.drawable.heart_j, R.drawable.heart_q, R.drawable.heart_k,
-            R.drawable.club_a, R.drawable.club_2, R.drawable.club_3, R.drawable.club_4,
-            R.drawable.club_5, R.drawable.club_6, R.drawable.club_7, R.drawable.club_8,
-            R.drawable.club_9, R.drawable.club_j, R.drawable.club_q, R.drawable.club_k,
-            R.drawable.diam_a, R.drawable.diam_2, R.drawable.diam_3, R.drawable.diam_4,
+            R.drawable.heart_10, R.drawable.heart_j, R.drawable.heart_q, R.drawable.heart_k,R.drawable.heart_a,
+            R.drawable.club_2, R.drawable.club_3, R.drawable.club_4, R.drawable.club_5, R.drawable.club_6,
+            R.drawable.club_7, R.drawable.club_8, R.drawable.club_9, R.drawable.club_j, R.drawable.club_q, R.drawable.club_k,R.drawable.club_a,
+            R.drawable.diam_2, R.drawable.diam_3, R.drawable.diam_4,
             R.drawable.diam_5, R.drawable.diam_6, R.drawable.diam_7,R.drawable.diam_8,
-            R.drawable.diam_9, R.drawable.diam_j, R.drawable.diam_q, R.drawable.diam_k,
-            R.drawable.spade_a, R.drawable.spade_2, R.drawable.spade_3, R.drawable.spade_4,
+            R.drawable.diam_9, R.drawable.diam_j, R.drawable.diam_q, R.drawable.diam_k,R.drawable.diam_a,
+            R.drawable.spade_2, R.drawable.spade_3, R.drawable.spade_4,
             R.drawable.spade_5, R.drawable.spade_6, R.drawable.spade_7, R.drawable.spade_8,
-            R.drawable.spade_9, R.drawable.spade_j, R.drawable.spade_q, R.drawable.spade_k));
+            R.drawable.spade_9, R.drawable.spade_j, R.drawable.spade_q, R.drawable.spade_k,R.drawable.spade_a));
 
 
     private ArrayList<ImageView> userCards = new ArrayList<ImageView>();
@@ -69,6 +68,12 @@ public class PokerActivity extends Activity {
     private ArrayList userInfo;
     private Animation translate;
     private TextView betTV;
+    private int[] highCard=new int[2]; // 0- user 1- computer
+    private int numOfUsers = 0;
+
+    private int rank[] = new int[7];
+    private int suit[] = new int[7]; // 0 - heart  ** 1 - club ** 2- diam ** 3 - spade
+
     private int totalBetMoney = 0;
     private int userTotalMoney;
 
@@ -86,13 +91,33 @@ public class PokerActivity extends Activity {
         dealer();
         setButtonClickable();
 
-        moneySk.setVisibility(View.INVISIBLE);
-        betMoney.setVisibility(View.INVISIBLE);
-        checkBtn.setVisibility(View.INVISIBLE);
-        foldBtn.setVisibility(View.INVISIBLE);
+        setVisibleButtons(false);
 
         moneySk.setMax(userTotalMoney); //set total money for max
 
+
+    }
+
+    private void setVisibleButtons(boolean visible) {
+
+        if(visible == false) {
+            moneySk.setVisibility(View.INVISIBLE);
+            betMoney.setVisibility(View.INVISIBLE);
+            checkBtn.setVisibility(View.INVISIBLE);
+            foldBtn.setVisibility(View.INVISIBLE);
+            betTV.setVisibility(View.INVISIBLE);
+            totalBetTitle.setVisibility(View.INVISIBLE);
+            betBtn.setText("Play");
+        }
+
+        else {
+            moneySk.setVisibility(View.VISIBLE);
+            betMoney.setVisibility(View.VISIBLE);
+            betTV.setVisibility(View.VISIBLE);
+            totalBetTitle.setVisibility(View.VISIBLE);
+            foldBtn.setVisibility(View.VISIBLE);
+            betBtn.setText("Bet");
+        }
 
     }
 
@@ -104,6 +129,7 @@ public class PokerActivity extends Activity {
         moneySk = (SeekBar) findViewById(R.id.money_poker);
         betMoney = (TextView) findViewById(R.id.bet_poker_txt);
         betTV = (TextView) findViewById(R.id.betTV);
+        totalBetTitle = (TextView) findViewById(R.id.total_bet_title);
     }
 
     private void setButtonClickable() {
@@ -112,11 +138,9 @@ public class PokerActivity extends Activity {
             @Override
             public void onClick(View v) {
                 couter++;
+
                 if (couter == 1) {
-                    moneySk.setVisibility(View.VISIBLE);
-                    betMoney.setVisibility(View.VISIBLE);
-                    betBtn.setText("Bet");
-                    foldBtn.setVisibility(View.VISIBLE);
+                    setVisibleButtons(true);
 
                     //flip user cards
                     for (int i = 0; i < NUM_USER_CARDS; i++) {
@@ -143,7 +167,9 @@ public class PokerActivity extends Activity {
                 } else if (couter == 5){
                     updateMoneyTextView();
                     //check if the user won
+                    getWinner();
                 }
+                moneySk.setProgress(0);
             }
 
         });
@@ -152,13 +178,14 @@ public class PokerActivity extends Activity {
             @Override
             public void onClick(View v) {
                 couter = 0;
-
+                moneySk.setProgress(0);
                 userTotalMoney -= totalBetMoney;
                 betTV.setText(0+"$");
                 moneySk.setMax(userTotalMoney);
-
+                //update total money
                 foldBtn.setVisibility(View.INVISIBLE);
                 checkBtn.setVisibility(View.INVISIBLE);
+
                 dealer();
             }
         });
@@ -182,6 +209,128 @@ public class PokerActivity extends Activity {
 
 
     }
+
+    private void getWinner() {
+        for(int i=0;i<5;i++){
+            rank[i] = (allCards.indexOf(flopCards.get(0))%13)+2 ;
+            suit[i] = (allCards.indexOf(flopCards.get(0))/13);
+        }
+
+
+
+
+    }
+
+    private boolean isFullHouse() {
+        if (isThreeOfAKind()) {
+            int counter = 1;
+            int[] tempRank = rank;
+            int lastRank = tempRank[tempRank.length - 1];
+            Arrays.sort(tempRank);
+            for (int i = tempRank.length - 1; i > 0; i--) {
+                if (lastRank != highCard[numOfUsers]) {
+                    if (tempRank[i] == lastRank) counter++;
+                    else lastRank = tempRank[i];
+                    if (counter == 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isStrait(){
+        int[] tempRank = rank;
+        int lastRank;
+        int counter=1;
+        Arrays.sort(tempRank);
+        for(int i=2; i > 0 ; i--){
+            lastRank=tempRank[i];
+            for(int j=i; j<i+5;j++){ //run from index 2 to 0, checking the high cards first
+
+                if(tempRank[j] != lastRank +1) j=tempRank.length;
+                else{
+                    lastRank = tempRank[j];
+                    counter++;
+                }
+            }
+            if(counter >= 5){
+                highCard[numOfUsers]=lastRank;
+                return true;
+            }
+            counter=1;
+        }
+
+        return false;
+    }
+    private boolean isFlush() {
+        int counter = 1;
+        for(int i=0 ; i<suit.length;i++){
+            highCard[numOfUsers]=rank[i];
+            for(int j=i;j<suit.length;i++){
+
+                if(i!=j){
+                    if(suit[i] == suit[j]){
+                        counter++;
+                         highCard[numOfUsers] = rank[j];
+                    }
+                }
+            }
+            if(counter >= 5) return true;
+            counter = 1;
+        }
+        return false;
+    }
+    
+    private boolean isFourOfAKind(){
+        int counter=1;
+        int[] tempRank = rank;
+        int lastRank = tempRank[tempRank.length-1];
+        Arrays.sort(tempRank);
+        for(int i=tempRank.length-1 ; i>0 ; i--){
+            if(tempRank[i]==lastRank) counter++;
+            else lastRank=tempRank[i];
+            if(counter==4){
+                highCard[numOfUsers]=lastRank;
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private boolean isThreeOfAKind(){
+        int counter=1;
+        int[] tempRank = rank;
+        int lastRank = tempRank[tempRank.length-1];
+        Arrays.sort(tempRank);
+        for(int i=tempRank.length-1 ; i>0 ; i--){
+            if(tempRank[i]==lastRank) counter++;
+            else lastRank=tempRank[i];
+            if(counter==3){
+                highCard[numOfUsers]=lastRank;
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean isPair(){
+        int counter=1;
+        int[] tempRank = rank;
+        int lastRank = tempRank[tempRank.length-1];
+        Arrays.sort(tempRank);
+        for(int i=tempRank.length-1 ; i>0 ; i--){
+            if(tempRank[i]==lastRank) counter++;
+            else lastRank=tempRank[i];
+            if(counter==2){
+                highCard[numOfUsers]=lastRank;
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void updateMoneyTextView(){
         totalBetMoney += moneySk.getProgress();
         moneySk.setMax(userTotalMoney-totalBetMoney);
