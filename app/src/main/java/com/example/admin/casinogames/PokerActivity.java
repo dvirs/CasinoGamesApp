@@ -212,25 +212,53 @@ public class PokerActivity extends Activity {
 
     private void getWinner() {
         for(int i=0;i<5;i++){
-            rank[i] = (allCards.indexOf(flopCards.get(0))%13)+2 ;
-            suit[i] = (allCards.indexOf(flopCards.get(0))/13);
+            rank[i] = (allCards.indexOf(flopCards.get(i))%13)+2 ;
+            suit[i] = (allCards.indexOf(flopCards.get(i))/13);
         }
-
+        while(numOfUsers<2){
+            for(int i=5;i<rank.length;i++) {
+                rank[i] = (allCards.indexOf(userCards.get(i-5))%13)+2 ;
+                suit[i] = (allCards.indexOf(userCards.get(i-5))/13);
+            }
+        }
 
 
 
     }
 
+    private boolean isFourOfAKind(){
+        int counter=0;
+        int[] tempRank = rank;
+        Arrays.sort(tempRank);
+        int lastRank = tempRank[tempRank.length-1];
+        for(int i=tempRank.length-1 ; i>0 ; i--){
+            if(tempRank[i]==lastRank) counter++;
+            else{
+                lastRank=tempRank[i];
+                counter=1;
+            }
+            if(counter==4){
+                highCard[numOfUsers]=lastRank;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private boolean isFullHouse() {
         if (isThreeOfAKind()) {
-            int counter = 1;
+            int counter = 0;
             int[] tempRank = rank;
-            int lastRank = tempRank[tempRank.length - 1];
             Arrays.sort(tempRank);
+            int lastRank = tempRank[tempRank.length - 1];
             for (int i = tempRank.length - 1; i > 0; i--) {
                 if (lastRank != highCard[numOfUsers]) {
                     if (tempRank[i] == lastRank) counter++;
-                    else lastRank = tempRank[i];
+                    else{
+                        counter =1;
+                        lastRank = tempRank[i];
+                    }
                     if (counter == 2) {
                         return true;
                     }
@@ -245,22 +273,34 @@ public class PokerActivity extends Activity {
         int lastRank;
         int counter=1;
         Arrays.sort(tempRank);
-        for(int i=2; i > 0 ; i--){
-            lastRank=tempRank[i];
-            for(int j=i; j<i+5;j++){ //run from index 2 to 0, checking the high cards first
-
-                if(tempRank[j] != lastRank +1) j=tempRank.length;
-                else{
-                    lastRank = tempRank[j];
-                    counter++;
-                }
-            }
-            if(counter >= 5){
-                highCard[numOfUsers]=lastRank;
-                return true;
-            }
-            counter=1;
+        int loop=1;
+        if(tempRank[tempRank.length-1] == 14){
+            loop = 2;
         }
+        while(loop >0) {
+
+            for (int i = 2; i > 0; i--) {
+                lastRank = tempRank[i];
+                for (int j = i + 1; j < i + 5; j++) { //run from index 2 to 0, checking the high cards first
+                    if (tempRank[j] != lastRank + 1) j = tempRank.length;
+                    else {
+                        lastRank = tempRank[j];
+                        counter++;
+                    }
+                }
+                if (counter >= 5) {
+                    highCard[numOfUsers] = lastRank;
+                    return true;
+                }
+                counter = 1;
+            }
+            if(loop==2){
+                tempRank[tempRank.length-1]=1;
+                Arrays.sort(tempRank);
+            }
+            loop--;
+        }
+
 
         return false;
     }
@@ -282,23 +322,7 @@ public class PokerActivity extends Activity {
         }
         return false;
     }
-    
-    private boolean isFourOfAKind(){
-        int counter=1;
-        int[] tempRank = rank;
-        int lastRank = tempRank[tempRank.length-1];
-        Arrays.sort(tempRank);
-        for(int i=tempRank.length-1 ; i>0 ; i--){
-            if(tempRank[i]==lastRank) counter++;
-            else lastRank=tempRank[i];
-            if(counter==4){
-                highCard[numOfUsers]=lastRank;
-                return true;
-            }
-        }
-        
-        return false;
-    }
+
 
     private boolean isThreeOfAKind(){
         int counter=1;
