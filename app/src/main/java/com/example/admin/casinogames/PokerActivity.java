@@ -165,6 +165,9 @@ public class PokerActivity extends Activity {
 
                     flipCard(flopCards.get(4));
                 } else if (couter == 5){
+                    for(int i = 0; i < dealerCards.size(); i++) {
+                        flipCard((dealerCards.get(i)));
+                    }
                     updateMoneyTextView();
                     //check if the user won
                     getWinner();
@@ -207,7 +210,6 @@ public class PokerActivity extends Activity {
             }
         });
 
-
     }
 
     private void getWinner() {
@@ -221,8 +223,6 @@ public class PokerActivity extends Activity {
                 suit[i] = (allCards.indexOf(userCards.get(i-5))/13);
             }
         }
-
-
 
     }
 
@@ -304,51 +304,99 @@ public class PokerActivity extends Activity {
 
         return false;
     }
+
     private boolean isFlush() {
+        int[] tempRank = rank; /* add */
+        Arrays.sort(tempRank); /* add */
         int counter = 1;
         for(int i=0 ; i<suit.length;i++){
-            highCard[numOfUsers]=rank[i];
+            //highCard[numOfUsers] = rank[i];
+            highCard[numOfUsers] = tempRank[i];
             for(int j=i;j<suit.length;i++){
 
                 if(i!=j){
                     if(suit[i] == suit[j]){
                         counter++;
-                         highCard[numOfUsers] = rank[j];
+                        //highCard[numOfUsers] = rank[j];
+                        highCard[numOfUsers] = tempRank[i];
                     }
                 }
             }
-            if(counter >= 5) return true;
+            if(counter >= 5)
+                return true;
             counter = 1;
         }
         return false;
     }
 
-
     private boolean isThreeOfAKind(){
-        int counter=1;
+        //int counter = 1;
+        int counter = 0;
         int[] tempRank = rank;
         int lastRank = tempRank[tempRank.length-1];
         Arrays.sort(tempRank);
-        for(int i=tempRank.length-1 ; i>0 ; i--){
-            if(tempRank[i]==lastRank) counter++;
-            else lastRank=tempRank[i];
-            if(counter==3){
-                highCard[numOfUsers]=lastRank;
+        for(int i = tempRank.length-1; i > 0; i--){
+            if(tempRank[i] == lastRank)
+                counter++;
+            else {
+                lastRank = tempRank[i];
+                counter = 1; /* add */
+            }
+
+            if(counter == 3){
+                highCard[numOfUsers] = lastRank;
                 return true;
             }
         }
         return false;
     }
+
+    private boolean isTwoPair() {
+        int counter = 0;
+        int pairsCounter = 0;
+        int[] tempRank = rank;
+        int lastRank = tempRank[tempRank.length-1];
+        int firstRank = tempRank[tempRank.length-1];
+        Arrays.sort(tempRank);
+        for( int i = tempRank.length-1; i > 0; i--) {
+            if(tempRank[i] == lastRank) {
+                counter++;
+            }
+            else {
+                lastRank = tempRank[i];
+                counter = 1;
+            }
+
+            if(counter == 2) {
+                firstRank = tempRank[i];
+                pairsCounter++;
+                counter = 1;
+            }
+
+            if(pairsCounter == 2) {
+                highCard[numOfUsers] = firstRank;
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isPair(){
-        int counter=1;
+        //int counter = 1;
+        int counter = 0;
         int[] tempRank = rank;
         int lastRank = tempRank[tempRank.length-1];
         Arrays.sort(tempRank);
-        for(int i=tempRank.length-1 ; i>0 ; i--){
-            if(tempRank[i]==lastRank) counter++;
-            else lastRank=tempRank[i];
-            if(counter==2){
-                highCard[numOfUsers]=lastRank;
+        for(int i = tempRank.length-1; i > 0; i--){
+            if(tempRank[i] == lastRank)
+                counter++;
+            else {
+                lastRank = tempRank[i];
+                counter = 1; /* add */
+            }
+
+            if(counter == 2){
+                highCard[numOfUsers] = lastRank;
                 return true;
             }
         }
@@ -360,6 +408,7 @@ public class PokerActivity extends Activity {
         moneySk.setMax(userTotalMoney-totalBetMoney);
         betTV.setText(totalBetMoney+"$");
     }
+
     private void dealer() {
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
