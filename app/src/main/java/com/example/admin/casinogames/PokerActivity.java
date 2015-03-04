@@ -170,7 +170,7 @@ public class PokerActivity extends Activity {
                     }
                     updateMoneyTextView();
                     //check if the user won
-                    getWinner();
+                    //getWinner();
                 }
                 moneySk.setProgress(0);
             }
