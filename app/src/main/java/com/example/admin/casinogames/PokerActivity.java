@@ -61,6 +61,19 @@ public class PokerActivity extends Activity {
             R.drawable.spade_5, R.drawable.spade_6, R.drawable.spade_7, R.drawable.spade_8,
             R.drawable.spade_9, R.drawable.spade_j, R.drawable.spade_q, R.drawable.spade_k,R.drawable.spade_a));
 
+    private enum handStrength {
+        HIGH_CARD(1), PAIR(2), TWO_PAIR(3), THREE_OF_A_KIND(4), STRAIGHT(5), FLUSH(6),FULL_HOUSE(7), FOUR_OF_A_KIND(8);
+
+        private int Rankpoints;
+
+        handStrength(int points) {
+            this.Rankpoints = points;
+        }
+
+        public int getRankpoints() {
+            return this.Rankpoints;
+        }
+    }
 
     private ArrayList<ImageView> userCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> flopCards = new ArrayList<ImageView>();
@@ -76,6 +89,7 @@ public class PokerActivity extends Activity {
 
     private int totalBetMoney = 0;
     private int userTotalMoney;
+    private handStrength[] hands= new handStrength[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +108,8 @@ public class PokerActivity extends Activity {
         setVisibleButtons(false);
 
         moneySk.setMax(userTotalMoney); //set total money for max
+
+
 
 
     }
@@ -170,7 +186,8 @@ public class PokerActivity extends Activity {
                     }
                     updateMoneyTextView();
                     //check if the user won
-                    //getWinner();
+                    getWinner();
+                    //update money
                 }
                 moneySk.setProgress(0);
             }
@@ -213,18 +230,63 @@ public class PokerActivity extends Activity {
     }
 
     private void getWinner() {
+        numOfUsers = 0;
+
         for(int i=0;i<5;i++){
             rank[i] = (allCards.indexOf(flopCards.get(i))%13)+2 ;
             suit[i] = (allCards.indexOf(flopCards.get(i))/13);
         }
         while(numOfUsers<2){
-            for(int i=5;i<rank.length;i++) {
-                rank[i] = (allCards.indexOf(userCards.get(i-5))%13)+2 ;
-                suit[i] = (allCards.indexOf(userCards.get(i-5))/13);
+            if(numOfUsers==0) {
+                for (int i = 5; i < rank.length; i++) {
+                    rank[i] = (allCards.indexOf(userCards.get(i - 5)) % 13) + 2;
+                    suit[i] = (allCards.indexOf(userCards.get(i - 5)) / 13);
+                }
+            }else{
+                for (int i = 5; i < rank.length; i++) {
+                    rank[i] = (allCards.indexOf(dealerCards.get(i - 5)) % 13) + 2;
+                    suit[i] = (allCards.indexOf(dealerCards.get(i - 5)) / 13);
+                }
             }
+            getHandStrenght();
+            numOfUsers++;
+        }
+
+        if(hands[0].getRankpoints() > hands[1].getRankpoints()){
+            //user WON
+        }else if(hands[0].getRankpoints() == hands[1].getRankpoints()){
+            if(highCard[0] > highCard[1]){
+                //user WON
+            }else{
+                //Dealer WON
+            }
+        }else {
+            //Dealer WON
         }
 
     }
+
+    private void getHandStrenght(){
+        if(isFourOfAKind()){
+            hands[numOfUsers] = handStrength.FOUR_OF_A_KIND;
+        }else if(isFullHouse()){
+            hands[numOfUsers] = handStrength.FULL_HOUSE;
+        }else if(isFlush()){
+            hands[numOfUsers] = handStrength.FLUSH;
+        }else if(isStrait()){
+            hands[numOfUsers] = handStrength.STRAIGHT;
+        }else if(isThreeOfAKind()){
+            hands[numOfUsers] = handStrength.THREE_OF_A_KIND;
+        }else if(isTwoPair()){
+            hands[numOfUsers] = handStrength.TWO_PAIR;
+        }else if(isPair()){
+            hands[numOfUsers] = handStrength.PAIR;
+        }else if(isHighCard()){
+            hands[numOfUsers] = handStrength.HIGH_CARD;
+        }
+    }
+
+
 
     private boolean isFourOfAKind(){
         int counter=0;
@@ -306,19 +368,16 @@ public class PokerActivity extends Activity {
     }
 
     private boolean isFlush() {
-        int[] tempRank = rank; /* add */
-        Arrays.sort(tempRank); /* add */
+
         int counter = 1;
         for(int i=0 ; i<suit.length;i++){
-            //highCard[numOfUsers] = rank[i];
-            highCard[numOfUsers] = tempRank[i];
-            for(int j=i;j<suit.length;i++){
+            highCard[numOfUsers] = rank[i];
 
+            for(int j=i;j<suit.length;i++){
                 if(i!=j){
                     if(suit[i] == suit[j]){
                         counter++;
-                        //highCard[numOfUsers] = rank[j];
-                        highCard[numOfUsers] = tempRank[i];
+                        highCard[numOfUsers] = rank[j];
                     }
                 }
             }
@@ -403,6 +462,11 @@ public class PokerActivity extends Activity {
         return false;
     }
 
+    private boolean isHighCard() {
+        highCard[numOfUsers] = rank[rank.length-1];
+        return true;
+    }
+
     private void updateMoneyTextView(){
         totalBetMoney += moneySk.getProgress();
         moneySk.setMax(userTotalMoney-totalBetMoney);
@@ -433,6 +497,7 @@ public class PokerActivity extends Activity {
             translate = AnimationUtils.loadAnimation(PokerActivity.this, animationDealerIds[i]);
             dealerCards.get(i).startAnimation(translate);
         }
+
 
     }
 
