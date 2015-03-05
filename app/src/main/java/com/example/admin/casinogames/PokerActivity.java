@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,13 +54,14 @@ public class PokerActivity extends Activity {
             R.drawable.heart_6, R.drawable.heart_7, R.drawable.heart_8, R.drawable.heart_9,
             R.drawable.heart_10, R.drawable.heart_j, R.drawable.heart_q, R.drawable.heart_k,R.drawable.heart_a,
             R.drawable.club_2, R.drawable.club_3, R.drawable.club_4, R.drawable.club_5, R.drawable.club_6,
-            R.drawable.club_7, R.drawable.club_8, R.drawable.club_9, R.drawable.club_j, R.drawable.club_q, R.drawable.club_k,R.drawable.club_a,
+            R.drawable.club_7, R.drawable.club_8, R.drawable.club_9,R.drawable.club_10, R.drawable.club_j,
+            R.drawable.club_q, R.drawable.club_k,R.drawable.club_a,
             R.drawable.diam_2, R.drawable.diam_3, R.drawable.diam_4,
             R.drawable.diam_5, R.drawable.diam_6, R.drawable.diam_7,R.drawable.diam_8,
-            R.drawable.diam_9, R.drawable.diam_j, R.drawable.diam_q, R.drawable.diam_k,R.drawable.diam_a,
+            R.drawable.diam_9, R.drawable.diam_10, R.drawable.diam_j, R.drawable.diam_q, R.drawable.diam_k,R.drawable.diam_a,
             R.drawable.spade_2, R.drawable.spade_3, R.drawable.spade_4,
             R.drawable.spade_5, R.drawable.spade_6, R.drawable.spade_7, R.drawable.spade_8,
-            R.drawable.spade_9, R.drawable.spade_j, R.drawable.spade_q, R.drawable.spade_k,R.drawable.spade_a));
+            R.drawable.spade_9, R.drawable.spade_10,R.drawable.spade_j, R.drawable.spade_q, R.drawable.spade_k,R.drawable.spade_a));
 
     private enum handStrength {
         HIGH_CARD(1), PAIR(2), TWO_PAIR(3), THREE_OF_A_KIND(4), STRAIGHT(5), FLUSH(6),FULL_HOUSE(7), FOUR_OF_A_KIND(8);
@@ -74,16 +76,20 @@ public class PokerActivity extends Activity {
             return this.Rankpoints;
         }
     }
+    private ArrayList<Integer> userCardsID = new ArrayList<>();
+    private ArrayList<Integer> flopCardID = new ArrayList<>();
+    private ArrayList<Integer> dealerCardsID = new ArrayList<>();
 
     private ArrayList<ImageView> userCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> flopCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> dealerCards = new ArrayList<ImageView>();
+
     private ArrayList userInfo;
     private Animation translate;
     private TextView betTV;
     private int[] highCard=new int[2]; // 0- user 1- computer
     private int numOfUsers = 0;
-
+    private int[] tempAllCards = new int[52];
     private int rank[] = new int[7];
     private int suit[] = new int[7]; // 0 - heart  ** 1 - club ** 2- diam ** 3 - spade
 
@@ -100,6 +106,7 @@ public class PokerActivity extends Activity {
         bundle = intent.getExtras();
         userInfo = (ArrayList) bundle.get("userinfo");
         userTotalMoney = (int) userInfo.get(4);
+
 
         setViewOfFields();
         dealer();
@@ -138,6 +145,7 @@ public class PokerActivity extends Activity {
     }
 
     private void setViewOfFields() {
+
         cards = (ImageView) findViewById(R.id.cards);
         betBtn = (Button) findViewById(R.id.playBtn);
         foldBtn = (Button) findViewById(R.id.foldBtn);
@@ -157,10 +165,12 @@ public class PokerActivity extends Activity {
 
                 if (couter == 1) {
                     setVisibleButtons(true);
-
+                    for(int i=0;i<tempAllCards.length;i++) tempAllCards[i] =0;
                     //flip user cards
                     for (int i = 0; i < NUM_USER_CARDS; i++) {
-                        flipCard(userCards.get(i));
+                        int index = randomCard();
+                        flipCard(userCards.get(i),index);
+                        userCardsID.add(i,allCards.get(index));
                     }
 
                 } else if (couter == 2) {
@@ -169,20 +179,28 @@ public class PokerActivity extends Activity {
 
                     //flip flop cards
                     for (int i = 0; i < 3; i++) {
-                        flipCard(flopCards.get(i));
+                        int index = randomCard();
+                        flipCard(flopCards.get(i),index);
+                        flopCardID.add(i,allCards.get(index));
                     }
 
                 } else if (couter == 3) {
                     updateMoneyTextView();
-                    flipCard(flopCards.get(3));
+                    int index = randomCard();
+                    flipCard(flopCards.get(3),index);
+                    flopCardID.add(3,allCards.get(index));
 
                 } else if (couter == 4) {
                     updateMoneyTextView();
+                    int index = randomCard();
+                    flipCard(flopCards.get(4),index);
+                    flopCardID.add(4,allCards.get(index));
 
-                    flipCard(flopCards.get(4));
                 } else if (couter == 5){
-                    for(int i = 0; i < dealerCards.size(); i++) {
-                        flipCard((dealerCards.get(i)));
+                    for(int i = 0; i < NUM_USER_CARDS; i++) {
+                        int index = randomCard();
+                        flipCard(dealerCards.get(i),index);
+                        dealerCardsID.add(i,allCards.get(index));
                     }
                     updateMoneyTextView();
                     //check if the user won
@@ -233,37 +251,52 @@ public class PokerActivity extends Activity {
         numOfUsers = 0;
 
         for(int i=0;i<5;i++){
-            rank[i] = (allCards.indexOf(flopCards.get(i))%13)+2 ;
-            suit[i] = (allCards.indexOf(flopCards.get(i))/13);
+            rank[i] = (allCards.indexOf(flopCardID.get(i))%13)+2 ;
+            suit[i] = (allCards.indexOf(flopCardID.get(i))/13);
         }
         while(numOfUsers<2){
             if(numOfUsers==0) {
                 for (int i = 5; i < rank.length; i++) {
-                    rank[i] = (allCards.indexOf(userCards.get(i - 5)) % 13) + 2;
-                    suit[i] = (allCards.indexOf(userCards.get(i - 5)) / 13);
+                    rank[i] = (allCards.indexOf(userCardsID.get(i - 5)) % 13) + 2;
+                    suit[i] = (allCards.indexOf(userCardsID.get(i - 5)) / 13);
                 }
             }else{
                 for (int i = 5; i < rank.length; i++) {
-                    rank[i] = (allCards.indexOf(dealerCards.get(i - 5)) % 13) + 2;
-                    suit[i] = (allCards.indexOf(dealerCards.get(i - 5)) / 13);
+                    rank[i] = (allCards.indexOf(dealerCardsID.get(i - 5)) % 13) + 2;
+                    suit[i] = (allCards.indexOf(dealerCardsID.get(i - 5)) / 13);
                 }
             }
+            String str ="[";
+            for(int i=0;i<rank.length;i++) str+=rank[i]+",";
+            str+="]";
+            Log.e("Debug",""+str);
             getHandStrenght();
             numOfUsers++;
         }
 
+        Log.e("DEBUG","User Hand: " + hands[0]);
+        Log.e("DEBUG","Dealer Hand: " + hands[1]);
         if(hands[0].getRankpoints() > hands[1].getRankpoints()){
-            //user WON
+            userWon();
         }else if(hands[0].getRankpoints() == hands[1].getRankpoints()){
-            if(highCard[0] > highCard[1]){
-                //user WON
+            if(highCard[0] >= highCard[1]){
+                userWon();
             }else{
-                //Dealer WON
+                dealerWon();
             }
         }else {
-            //Dealer WON
+            dealerWon();
         }
+        hands = new handStrength[2];
 
+    }
+
+    private void dealerWon() {
+        Toast.makeText(this,"Dealer WON!!!",Toast.LENGTH_LONG).show();
+    }
+
+    private void userWon() {
+        Toast.makeText(this,"User WON!!!",Toast.LENGTH_LONG).show();
     }
 
     private void getHandStrenght(){
@@ -290,7 +323,8 @@ public class PokerActivity extends Activity {
 
     private boolean isFourOfAKind(){
         int counter=0;
-        int[] tempRank = rank;
+        int[] tempRank = new int[rank.length];
+        for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
         Arrays.sort(tempRank);
         int lastRank = tempRank[tempRank.length-1];
         for(int i=tempRank.length-1 ; i>0 ; i--){
@@ -311,7 +345,8 @@ public class PokerActivity extends Activity {
     private boolean isFullHouse() {
         if (isThreeOfAKind()) {
             int counter = 0;
-            int[] tempRank = rank;
+            int[] tempRank = new int[rank.length];
+            for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
             Arrays.sort(tempRank);
             int lastRank = tempRank[tempRank.length - 1];
             for (int i = tempRank.length - 1; i > 0; i--) {
@@ -331,7 +366,8 @@ public class PokerActivity extends Activity {
     }
 
     private boolean isStrait(){
-        int[] tempRank = rank;
+        int[] tempRank = new int[rank.length];
+        for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
         int lastRank;
         int counter=1;
         Arrays.sort(tempRank);
@@ -373,17 +409,19 @@ public class PokerActivity extends Activity {
         for(int i=0 ; i<suit.length;i++){
             highCard[numOfUsers] = rank[i];
 
-            for(int j=i;j<suit.length;i++){
+            for(int j=i;j<suit.length;j++){
                 if(i!=j){
                     if(suit[i] == suit[j]){
                         counter++;
-                        highCard[numOfUsers] = rank[j];
+                        if(rank[j]>highCard[numOfUsers]) {
+                            highCard[numOfUsers] = rank[j];
+                        }
                     }
                 }
             }
-            if(counter >= 5)
+            if(counter >= 5) {
                 return true;
-            counter = 1;
+            }else {counter = 1;}
         }
         return false;
     }
@@ -391,7 +429,8 @@ public class PokerActivity extends Activity {
     private boolean isThreeOfAKind(){
         //int counter = 1;
         int counter = 0;
-        int[] tempRank = rank;
+        int[] tempRank = new int[rank.length];
+        for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
         int lastRank = tempRank[tempRank.length-1];
         Arrays.sort(tempRank);
         for(int i = tempRank.length-1; i > 0; i--){
@@ -413,7 +452,8 @@ public class PokerActivity extends Activity {
     private boolean isTwoPair() {
         int counter = 0;
         int pairsCounter = 0;
-        int[] tempRank = rank;
+        int[] tempRank = new int[rank.length];
+        for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
         int lastRank = tempRank[tempRank.length-1];
         int firstRank = tempRank[tempRank.length-1];
         Arrays.sort(tempRank);
@@ -443,7 +483,8 @@ public class PokerActivity extends Activity {
     private boolean isPair(){
         //int counter = 1;
         int counter = 0;
-        int[] tempRank = rank;
+        int[] tempRank = new int[rank.length];
+        for(int i=0;i<rank.length;i++) tempRank[i] = rank[i];
         int lastRank = tempRank[tempRank.length-1];
         Arrays.sort(tempRank);
         for(int i = tempRank.length-1; i > 0; i--){
@@ -474,6 +515,7 @@ public class PokerActivity extends Activity {
     }
 
     private void dealer() {
+
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
             userCards.add(i, (ImageView) findViewById(viewUserIds[i]));
@@ -501,10 +543,10 @@ public class PokerActivity extends Activity {
 
     }
 
-    private void flipCard(final ImageView imageView) {
+    private void flipCard(final ImageView imageView, final int card_index) {
         ObjectAnimator flip = (ObjectAnimator) AnimatorInflater.loadAnimator(PokerActivity.this,
                 animationFlopIds[animationFlopIds.length - 1]);
-        final int card_index = randomCard();
+
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
         flip.setDuration(4000);
@@ -517,7 +559,7 @@ public class PokerActivity extends Activity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 imageView.setImageResource(allCards.get(card_index));
-                allCards.set(card_index, USED_CARD); //set selected card be used
+
             }
 
             @Override
@@ -542,11 +584,13 @@ public class PokerActivity extends Activity {
         while (flag) {
             index = random.nextInt(allCards.size());
             Log.e("Debug","Index: " +index);
-            if(allCards.get(index) == USED_CARD) {
+            if(tempAllCards[index] == USED_CARD) {
                 flag = true;
+
             }
             else {
                 flag = false;
+                tempAllCards[index] = USED_CARD; //set selected card be used
             }
 
         }

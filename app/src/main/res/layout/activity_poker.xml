@@ -19,56 +19,56 @@
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/user_card1"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/user_card2"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/flop_card1"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/flop_card2"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/flop_card3"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/flop_card4"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/flop_card5"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/dealer_card1"
         android:layout_gravity="center_horizontal|top" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:id="@+id/dealer_card2"
         android:layout_gravity="center_horizontal|top" />
 
