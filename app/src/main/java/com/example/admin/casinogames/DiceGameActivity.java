@@ -193,7 +193,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         synchronized (getLayoutInflater()) {
             animationHandler.sendEmptyMessage(0);
         }
-        try { // delay to alloy for smooth animation
+        try { // delay to allow for smooth animation
             sleep(delayTime);
         } catch (final InterruptedException e) {
             e.printStackTrace();

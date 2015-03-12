@@ -3,6 +3,6 @@
     android:fromXDelta="0"
     android:toXDelta="60"
     android:fromYDelta="0"
-    android:toYDelta="550"
+    android:toYDelta="450"
     android:duration="1000"
     android:fillAfter="true" />

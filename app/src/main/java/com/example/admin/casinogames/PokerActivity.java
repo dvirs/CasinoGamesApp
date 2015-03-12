@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +21,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.com.example.admin.tasks.updateUserTotalMoneyTask;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -32,7 +40,7 @@ public class PokerActivity extends Activity {
     private final int USED_CARD = -100;
 
     private Bundle bundle;
-    private int couter = 0; //count number of clicks on bet button
+    private int counter = 0; //count number of clicks on bet button
 
     private ImageView cards;
     private Button betBtn,foldBtn,checkBtn;
@@ -83,7 +91,7 @@ public class PokerActivity extends Activity {
     private ArrayList<ImageView> userCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> flopCards = new ArrayList<ImageView>();
     private ArrayList<ImageView> dealerCards = new ArrayList<ImageView>();
-
+    private int[] sounds = {R.raw.cardflip,R.raw.cointoss,R.raw.pokerroom,R.raw.screamnoooh,R.raw.shufflingcards};
     private ArrayList userInfo;
     private Animation translate;
     private TextView betTV;
@@ -92,10 +100,11 @@ public class PokerActivity extends Activity {
     private int[] tempAllCards = new int[52];
     private int rank[] = new int[7];
     private int suit[] = new int[7]; // 0 - heart  ** 1 - club ** 2- diam ** 3 - spade
-
+    private boolean userWon = false;
     private int totalBetMoney = 0;
     private int userTotalMoney;
     private handStrength[] hands= new handStrength[2];
+    private int betMulti = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,42 +170,49 @@ public class PokerActivity extends Activity {
         betBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                couter++;
 
-                if (couter == 1) {
+                if(counter !=0 && moneySk.getProgress() == 0) Toast.makeText(PokerActivity.this,"You Must Bet or Fold",Toast.LENGTH_LONG).show();
+                else counter++;
+                if (counter == 1) {
                     setVisibleButtons(true);
                     for(int i=0;i<tempAllCards.length;i++) tempAllCards[i] =0;
                     //flip user cards
                     for (int i = 0; i < NUM_USER_CARDS; i++) {
                         int index = randomCard();
+                        playSound(sounds[0]);
                         flipCard(userCards.get(i),index);
                         userCardsID.add(i,allCards.get(index));
                     }
 
-                } else if (couter == 2) {
+                } else if (counter == 2) {
                     checkBtn.setVisibility(View.VISIBLE);
+
                     updateMoneyTextView();
 
                     //flip flop cards
                     for (int i = 0; i < 3; i++) {
                         int index = randomCard();
+                        playSound(sounds[0]);
                         flipCard(flopCards.get(i),index);
                         flopCardID.add(i,allCards.get(index));
                     }
+                    betBtn.setText("Raise");
 
-                } else if (couter == 3) {
+                } else if (counter == 3) {
                     updateMoneyTextView();
                     int index = randomCard();
+                    playSound(sounds[0]);
                     flipCard(flopCards.get(3),index);
-                    flopCardID.add(3,allCards.get(index));
+                    flopCardID.add(3, allCards.get(index));
 
-                } else if (couter == 4) {
+                } else if (counter == 4) {
                     updateMoneyTextView();
                     int index = randomCard();
+                    playSound(sounds[0]);
                     flipCard(flopCards.get(4),index);
                     flopCardID.add(4,allCards.get(index));
 
-                } else if (couter == 5){
+                } else if (counter == 5){
                     for(int i = 0; i < NUM_USER_CARDS; i++) {
                         int index = randomCard();
                         flipCard(dealerCards.get(i),index);
@@ -205,8 +221,15 @@ public class PokerActivity extends Activity {
                     updateMoneyTextView();
                     //check if the user won
                     getWinner();
+
                     //update money
+                    updateUserMoney();
+                    //start a new game
+                    //ask if wants a new game
+                    newGame();
                 }
+
+
                 moneySk.setProgress(0);
             }
 
@@ -215,16 +238,20 @@ public class PokerActivity extends Activity {
         foldBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                couter = 0;
-                moneySk.setProgress(0);
-                userTotalMoney -= totalBetMoney;
-                betTV.setText(0+"$");
-                moneySk.setMax(userTotalMoney);
-                //update total money
-                foldBtn.setVisibility(View.INVISIBLE);
-                checkBtn.setVisibility(View.INVISIBLE);
 
-                dealer();
+                userWon = false;
+                //update total money
+                updateUserMoney();
+                newGame();
+
+            }
+        });
+
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                counter++;
+
             }
         });
 
@@ -246,6 +273,38 @@ public class PokerActivity extends Activity {
         });
 
     }
+    private void playSound(int sound){
+        MediaPlayer mp = MediaPlayer.create(PokerActivity.this ,sound);
+        try {
+            mp.prepare();
+
+        }catch (IllegalStateException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mp.start();
+    }
+    private void newGame() {
+        betTV.setText(0+"$");
+        counter = 0;
+        moneySk.setProgress(0);
+        setVisible(false);
+        dealer();
+    }
+
+    private void updateUserMoney() {
+        if(userWon){ userTotalMoney+=totalBetMoney*betMulti;}
+        else{ userTotalMoney -= totalBetMoney;}
+        userInfo.set(4,userTotalMoney);
+        ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
+        userInfoArray.add(new BasicNameValuePair("id", userInfo.get(0).toString()));
+        userInfoArray.add(new BasicNameValuePair("totalmoney",""+userTotalMoney));
+        moneySk.setMax(userTotalMoney);
+
+        new updateUserTotalMoneyTask(userInfoArray).execute(new apiConnectorDB());
+    }
 
     private void getWinner() {
         numOfUsers = 0;
@@ -266,10 +325,13 @@ public class PokerActivity extends Activity {
                     suit[i] = (allCards.indexOf(dealerCardsID.get(i - 5)) / 13);
                 }
             }
+            //Debug
             String str ="[";
             for(int i=0;i<rank.length;i++) str+=rank[i]+",";
             str+="]";
             Log.e("Debug",""+str);
+            //End Debug
+
             getHandStrenght();
             numOfUsers++;
         }
@@ -287,16 +349,18 @@ public class PokerActivity extends Activity {
         }else {
             dealerWon();
         }
-        hands = new handStrength[2];
-
     }
 
     private void dealerWon() {
-        Toast.makeText(this,"Dealer WON!!!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Dealer WON!!! With "+hands[1],Toast.LENGTH_LONG).show();
+        userWon = false;
+        playSound(sounds[3]);
     }
 
     private void userWon() {
-        Toast.makeText(this,"User WON!!!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"User WON!!!With "+hands[0],Toast.LENGTH_LONG).show();
+        userWon = true;
+
     }
 
     private void getHandStrenght(){
@@ -509,13 +573,14 @@ public class PokerActivity extends Activity {
     }
 
     private void updateMoneyTextView(){
+        betMulti++;
         totalBetMoney += moneySk.getProgress();
         moneySk.setMax(userTotalMoney-totalBetMoney);
         betTV.setText(totalBetMoney+"$");
     }
 
     private void dealer() {
-
+        playSound(sounds[4]);
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
             userCards.add(i, (ImageView) findViewById(viewUserIds[i]));
