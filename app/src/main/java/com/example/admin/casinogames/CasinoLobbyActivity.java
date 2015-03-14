@@ -6,7 +6,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import com.example.admin.casinogames.UtilClass.MyAdapter;
 import com.example.admin.casinogames.UtilClass.User;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.utils;
 import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
 import com.example.admin.casinogames.com.example.admin.tasks.getUserTask;
 import com.example.admin.casinogames.com.example.admin.tasks.logoutTask;
@@ -41,6 +46,8 @@ public class CasinoLobbyActivity extends Activity {
     private ListView usersList;
     private CasinoLobbyActivity activity;
     private Bundle saveState;
+    private Bitmap userBM;
+    private ImageView userImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +76,7 @@ public class CasinoLobbyActivity extends Activity {
         signInBtn = (Button) findViewById(R.id.sign_in_btn_lob);
         signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
         usersList = (ListView) findViewById(R.id.user_list);
-
+        userImage = (ImageView) findViewById(R.id.userImage);
 
     }
 
@@ -82,8 +89,10 @@ public class CasinoLobbyActivity extends Activity {
             settingsBtn.setVisibility(View.INVISIBLE);
             highScoreBtn.setVisibility(View.INVISIBLE);
             logoutBtn.setVisibility(View.INVISIBLE);
+            userImage.setVisibility(View.INVISIBLE);
             signInBtn.setVisibility(View.VISIBLE);
             signUpBtn.setVisibility(View.VISIBLE);
+
         }
         else {
             cubes_btn.setVisibility(View.VISIBLE);
@@ -91,10 +100,13 @@ public class CasinoLobbyActivity extends Activity {
             settingsBtn.setVisibility(View.VISIBLE);
             highScoreBtn.setVisibility(View.VISIBLE);
             logoutBtn.setVisibility(View.VISIBLE);
+            userImage.setVisibility(View.VISIBLE);
             signInBtn.setVisibility(View.INVISIBLE);
             signUpBtn.setVisibility(View.INVISIBLE);
 
             userInfo = (ArrayList) bund.get("userinfo");
+            userBM = utils.decodeTobase64(userInfo.get(5).toString());
+            userImage.setImageBitmap(userBM);
             userNameTxt.setText("Hello, " + userInfo.get(1).toString());
             totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
 
@@ -219,6 +231,7 @@ public class CasinoLobbyActivity extends Activity {
         }
 
     }
+
 
     @Override
     protected void onResume() {

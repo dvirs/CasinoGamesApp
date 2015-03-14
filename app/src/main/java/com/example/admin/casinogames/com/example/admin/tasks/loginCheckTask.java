@@ -48,6 +48,7 @@ public class loginCheckTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
                                 userInfo.add(json.getString("email"));
                                 userInfo.add(json.getString("password"));
                                 userInfo.add(json.getInt("totalmoney"));
+                                userInfo.add(json.getString("image"));
 
                                 ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
                                 user.add(new BasicNameValuePair("id",""+json.getInt("id")));

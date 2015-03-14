@@ -38,6 +38,7 @@ public class getUserTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
                                 userInfo.add(json.getString("email"));
                                 userInfo.add(json.getString("password"));
                                 userInfo.add(json.getInt("totalmoney"));
+                                userInfo.add(json.getString("image"));
 
                             } catch (Exception e) {
                                 Log.e("Debug", "Didnt parse the Json to ArryList");

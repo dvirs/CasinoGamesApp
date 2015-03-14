@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.example.admin.casinogames.CasinoLobbyActivity;
 import com.example.admin.casinogames.UtilClass.User;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class TopUsersTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 try {
                     JSONObject json = jsonArray.getJSONObject(i);
-                    topUsers.add(new User("",json.getString("username"),json.getInt("totalmoney")));
+                    topUsers.add(new User("",json.getString("username"),json.getInt("totalmoney"), utils.decodeTobase64(json.getString("image"))));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

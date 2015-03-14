@@ -35,7 +35,7 @@ public class MyAdapter extends ArrayAdapter<User> {
 
         User currentUser = allUsers.get(position);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.icon);
-
+        imageView.setImageBitmap(currentUser.getUserImage());
         TextView userName = (TextView) itemView.findViewById(R.id.user_name);
         userName.setText(currentUser.getName());
 

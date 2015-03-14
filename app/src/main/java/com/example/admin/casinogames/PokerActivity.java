@@ -107,6 +107,8 @@ public class PokerActivity extends Activity {
     private int userTotalMoney;
     private handStrength[] hands= new handStrength[2];
     private int betMulti = 1;
+    private MediaPlayer mp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,7 +288,7 @@ public class PokerActivity extends Activity {
     }
 
     private void playSound(int sound){
-        MediaPlayer mp = MediaPlayer.create(PokerActivity.this ,sound);
+        mp = MediaPlayer.create(PokerActivity.this ,sound);
         try {
             mp.prepare();
 
@@ -341,7 +343,6 @@ public class PokerActivity extends Activity {
 
     private void getWinner() {
         numOfUsers = 0;
-
         for(int i=0;i<5;i++){
             rank[i] = (allCards.indexOf(flopCardID.get(i))%13)+2 ;
             suit[i] = (allCards.indexOf(flopCardID.get(i))/13);
@@ -382,6 +383,7 @@ public class PokerActivity extends Activity {
         }else {
             dealerWon();
         }
+
     }
 
     private void dealerWon() {
@@ -605,8 +607,9 @@ public class PokerActivity extends Activity {
         return true;
     }
 
+
     private void updateMoneyTextView(){
-        betMulti++;
+        betMulti+=0.5;
         totalBetMoney += moneySk.getProgress();
         moneySk.setMax(userTotalMoney-totalBetMoney);
         betTV.setText(totalBetMoney+"$");
@@ -647,7 +650,7 @@ public class PokerActivity extends Activity {
 
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
-        flip.setDuration(4000);
+        flip.setDuration(2000);
         flip.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -724,6 +727,7 @@ public class PokerActivity extends Activity {
         builder.setMessage("Are you sure you want to exit the Poker Game?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        mp.release();
                         PokerActivity.this.finish();
                     }
                 })
@@ -735,6 +739,24 @@ public class PokerActivity extends Activity {
                 });
         builder.create();
         builder.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.release();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.release();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mp.release();
     }
 }
 

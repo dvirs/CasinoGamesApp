@@ -90,7 +90,8 @@
         android:textSize="30dp"
         android:textColor="#ff020000"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textAlignment="textEnd" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -113,6 +114,20 @@
         android:layout_alignStart="@+id/sign_in_btn_lob"
         android:layout_alignRight="@+id/sign_in_btn_lob"
         android:layout_alignEnd="@+id/sign_in_btn_lob" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userImage"
+        android:src="@drawable/icon"
+        android:layout_toRightOf="@+id/cubes_btn"
+        android:layout_alignTop="@+id/hi_txt"
+        android:minHeight="70dp"
+        android:minWidth="70dp"
+        android:nestedScrollingEnabled="false"
+        android:adjustViewBounds="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false" />
 
 
 </RelativeLayout>
