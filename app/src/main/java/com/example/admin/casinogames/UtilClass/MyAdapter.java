@@ -1,10 +1,11 @@
 package com.example.admin.casinogames.UtilClass;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin.casinogames.R;
@@ -34,8 +35,17 @@ public class MyAdapter extends ArrayAdapter<User> {
         }
 
         User currentUser = allUsers.get(position);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.icon);
-        imageView.setImageBitmap(currentUser.getUserImage());
+       // Log.e("Debug",currentUser.toString());
+            try {
+                roundedImageView imageView = (roundedImageView) itemView.findViewById(R.id.imageView);
+                Log.e("Debug", currentUser.getUserImage().toString());
+                Bitmap imageBM = currentUser.getUserImage();
+                if (imageBM != null) imageView.setImageBitmap(imageBM);
+            }catch (Exception e){}
+
+
+
+
         TextView userName = (TextView) itemView.findViewById(R.id.user_name);
         userName.setText(currentUser.getName());
 

@@ -34,7 +34,7 @@ public class TopUsersTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 try {
                     JSONObject json = jsonArray.getJSONObject(i);
-                    topUsers.add(new User("",json.getString("username"),json.getInt("totalmoney"), utils.decodeTobase64(json.getString("image"))));
+                    topUsers.add(new User(json.getString("email"),json.getString("username"),json.getInt("totalmoney"), utils.decodeTobase64(json.getString("image"))));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

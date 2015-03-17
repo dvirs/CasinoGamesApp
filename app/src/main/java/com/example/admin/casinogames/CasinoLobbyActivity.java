@@ -2,14 +2,11 @@ package com.example.admin.casinogames;
 
 import android.app.ActionBar;
 import android.app.Activity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -25,6 +21,7 @@ import android.widget.TextView;
 import com.example.admin.casinogames.UtilClass.MyAdapter;
 import com.example.admin.casinogames.UtilClass.User;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.roundedImageView;
 import com.example.admin.casinogames.UtilClass.utils;
 import com.example.admin.casinogames.com.example.admin.tasks.TopUsersTask;
 import com.example.admin.casinogames.com.example.admin.tasks.getUserTask;
@@ -47,7 +44,7 @@ public class CasinoLobbyActivity extends Activity {
     private CasinoLobbyActivity activity;
     private Bundle saveState;
     private Bitmap userBM;
-    private ImageView userImage;
+    private roundedImageView userImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +73,7 @@ public class CasinoLobbyActivity extends Activity {
         signInBtn = (Button) findViewById(R.id.sign_in_btn_lob);
         signUpBtn = (Button) findViewById(R.id.sign_up_btn_lob);
         usersList = (ListView) findViewById(R.id.user_list);
-        userImage = (ImageView) findViewById(R.id.userImage);
+        userImage = (roundedImageView) findViewById(R.id.userImage);
 
     }
 

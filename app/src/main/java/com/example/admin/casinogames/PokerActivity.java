@@ -284,6 +284,7 @@ public class PokerActivity extends Activity {
 
             newGame();
         }
+        moneySk.setProgress(0);
 
     }
 
@@ -389,13 +390,24 @@ public class PokerActivity extends Activity {
     private void dealerWon() {
         Toast.makeText(this,"Dealer WON!!! With "+hands[1],Toast.LENGTH_LONG).show();
         userWon = false;
-        playSound(sounds[3]);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                playSound(sounds[3]);
+            }
+        }).start();
+        
     }
 
     private void userWon() {
         Toast.makeText(this,"User WON!!!With "+hands[0],Toast.LENGTH_LONG).show();
         userWon = true;
-        playSound(sounds[5]);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                playSound(sounds[5]);
+            }
+        }).start();
     }
 
     private void getHandStrenght(){

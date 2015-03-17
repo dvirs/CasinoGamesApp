@@ -61,10 +61,11 @@
         android:id="@+id/imageView"
         android:background="@drawable/chips"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/hi_txt"
-        android:layout_toRightOf="@+id/hi_txt"
         android:layout_alignRight="@+id/high_score_btn"
-        android:layout_alignEnd="@+id/high_score_btn" />
+        android:layout_alignEnd="@+id/high_score_btn"
+        android:layout_alignBottom="@+id/userImage"
+        android:layout_alignLeft="@+id/high_score_btn"
+        android:layout_alignStart="@+id/high_score_btn" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,23 +76,21 @@
         android:textColor="#fe010000"
         android:textSize="30dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/high_score_btn" />
+        android:layout_toRightOf="@+id/settings_btn"
+        android:layout_toEndOf="@+id/settings_btn" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/demo_money"
         android:id="@+id/total_money_txt"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_toStartOf="@+id/logout_btn"
         android:textSize="30dp"
         android:textColor="#ff020000"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textAlignment="textEnd" />
+        android:textAlignment="textEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/logout_btn"
+        android:layout_alignEnd="@+id/logout_btn"
+        android:layout_alignLeft="@+id/poker_btn"
+        android:layout_alignStart="@+id/poker_btn" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -100,9 +99,9 @@
         android:text="@string/sign_in"
         android:id="@+id/sign_in_btn_lob"
         android:layout_alignTop="@+id/poker_btn"
-        android:layout_toLeftOf="@+id/total_money_txt"
         android:layout_toRightOf="@+id/hi_txt"
-        android:layout_toEndOf="@+id/hi_txt" />
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
 
     <Button
         android:layout_width="wrap_content"
@@ -115,19 +114,18 @@
         android:layout_alignRight="@+id/sign_in_btn_lob"
         android:layout_alignEnd="@+id/sign_in_btn_lob" />
 
-    <ImageView
+    <com.example.admin.casinogames.UtilClass.roundedImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/userImage"
         android:src="@drawable/icon"
-        android:layout_toRightOf="@+id/cubes_btn"
-        android:layout_alignTop="@+id/hi_txt"
         android:minHeight="70dp"
         android:minWidth="70dp"
         android:nestedScrollingEnabled="false"
         android:adjustViewBounds="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

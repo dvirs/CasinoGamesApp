@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
+    <com.example.admin.casinogames.UtilClass.roundedImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
@@ -13,7 +13,9 @@
         android:maxHeight="80dp"
         android:maxWidth="80dp"
         android:longClickable="false"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:minHeight="80dp"
+        android:minWidth="80dp" />
 
     <TextView
         android:layout_width="wrap_content"
