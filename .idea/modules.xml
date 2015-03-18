@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CasinoGamesApp.iml" filepath="$PROJECT_DIR$/CasinoGamesApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/FlipImageView/FlipImageView.iml" filepath="$PROJECT_DIR$/app/libraries/FlipImageView/FlipImageView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/libraries.iml" filepath="$PROJECT_DIR$/app/libraries/libraries.iml" />
     </modules>
   </component>
 </project>

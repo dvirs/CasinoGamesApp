@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import fr.castorflex.android.flipimageview.library.FlipImageView;
+
 
 public class PokerActivity extends Activity {
 
@@ -42,7 +44,7 @@ public class PokerActivity extends Activity {
     private Bundle bundle;
     private int counter = 0; //count number of clicks on bet button
 
-    private ImageView cards;
+    private FlipImageView cards;
     private Button betBtn,foldBtn,checkBtn;
     private SeekBar moneySk;
     private TextView betMoney, totalBetTitle;
@@ -90,9 +92,9 @@ public class PokerActivity extends Activity {
     private ArrayList<Integer> flopCardID = new ArrayList<>();
     private ArrayList<Integer> dealerCardsID = new ArrayList<>();
 
-    private ArrayList<ImageView> userCards = new ArrayList<ImageView>();
-    private ArrayList<ImageView> flopCards = new ArrayList<ImageView>();
-    private ArrayList<ImageView> dealerCards = new ArrayList<ImageView>();
+    private ArrayList<FlipImageView> userCards = new ArrayList<FlipImageView>();
+    private ArrayList<FlipImageView> flopCards = new ArrayList<FlipImageView>();
+    private ArrayList<FlipImageView> dealerCards = new ArrayList<FlipImageView>();
     private int[] sounds = {R.raw.cardflip,R.raw.cointoss,R.raw.pokerroom,R.raw.screamnoooh,R.raw.shufflingcards,R.raw.lost};
     private ArrayList userInfo;
     private Animation translate;
@@ -159,7 +161,7 @@ public class PokerActivity extends Activity {
 
     private void setViewOfFields() {
 
-        cards = (ImageView) findViewById(R.id.cards);
+        cards = (FlipImageView) findViewById(R.id.cards);
         betBtn = (Button) findViewById(R.id.playBtn);
         foldBtn = (Button) findViewById(R.id.foldBtn);
         checkBtn = (Button) findViewById(R.id.checkBtn);
@@ -273,35 +275,55 @@ public class PokerActivity extends Activity {
                 flipCard(dealerCards.get(i),index);
                 dealerCardsID.add(i,allCards.get(index));
             }
+
             updateMoneyTextView();
             //check if the user won
             getWinner();
 
-            //update money
-            updateUserMoney();
-            //start a new game
-            //ask if wants a new game
-
-            newGame();
+            delayFunction();
         }
         moneySk.setProgress(0);
 
     }
 
-    private void playSound(int sound){
-        mp = MediaPlayer.create(PokerActivity.this ,sound);
-        try {
-            mp.prepare();
+    private void delayFunction() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateUserMoney();
+                //start a new game
+                //ask if wants a new game
+                newGame();
+            }
+        },2000);
 
-        }catch (IllegalStateException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        mp.start();
+
 
     }
+
+    private void playSound(final int sound){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mp = MediaPlayer.create(PokerActivity.this ,sound);
+                try {
+                    mp.prepare();
+
+                }catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                mp.start();
+
+            }
+        }).start();
+
+    }
+
     private void newGame() {
         try{
             if(flag){Thread.sleep(5000);}
@@ -388,26 +410,15 @@ public class PokerActivity extends Activity {
     }
 
     private void dealerWon() {
-        Toast.makeText(this,"Dealer WON!!! With "+hands[1],Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Dealer WON!!! With " + hands[1], Toast.LENGTH_LONG).show();
         userWon = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                playSound(sounds[3]);
-            }
-        }).start();
-        
+        playSound(sounds[3]);
     }
 
     private void userWon() {
         Toast.makeText(this,"User WON!!!With "+hands[0],Toast.LENGTH_LONG).show();
         userWon = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                playSound(sounds[5]);
-            }
-        }).start();
+        playSound(sounds[5]);
     }
 
     private void getHandStrenght(){
@@ -631,7 +642,7 @@ public class PokerActivity extends Activity {
         playSound(sounds[4]);
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
-            userCards.add(i, (ImageView) findViewById(viewUserIds[i]));
+            userCards.add(i, (FlipImageView) findViewById(viewUserIds[i]));
             userCards.get(i).setImageResource(R.drawable.back_card);
             translate = AnimationUtils.loadAnimation(PokerActivity.this, animationUserIds[i]);
             userCards.get(i).startAnimation(translate);
@@ -639,7 +650,7 @@ public class PokerActivity extends Activity {
 
         //flop cards
         for(int i = 0; i < NUM_FLOP_CARDS; i++) {
-            flopCards.add(i, (ImageView) findViewById(viewFlopIde[i]));
+            flopCards.add(i, (FlipImageView) findViewById(viewFlopIde[i]));
             flopCards.get(i).setImageResource(R.drawable.back_card);
             translate = AnimationUtils.loadAnimation(PokerActivity.this, animationFlopIds[i]);
             flopCards.get(i).startAnimation(translate);
@@ -647,7 +658,7 @@ public class PokerActivity extends Activity {
 
         //dealer cards
         for(int i = 0;i < NUM_USER_CARDS; i++) {
-            dealerCards.add(i, (ImageView) findViewById(viewDealerIds[i]));
+            dealerCards.add(i, (FlipImageView) findViewById(viewDealerIds[i]));
             dealerCards.get(i).setImageResource(R.drawable.back_card);
             translate = AnimationUtils.loadAnimation(PokerActivity.this, animationDealerIds[i]);
             dealerCards.get(i).startAnimation(translate);
@@ -656,13 +667,13 @@ public class PokerActivity extends Activity {
 
     }
 
-    private void flipCard(final ImageView imageView, final int card_index) {
+    private void flipCard(final FlipImageView imageView, final int card_index) {
         ObjectAnimator flip = (ObjectAnimator) AnimatorInflater.loadAnimator(PokerActivity.this,
                 animationFlopIds[animationFlopIds.length - 1]);
 
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
-        flip.setDuration(2000);
+        flip.setDuration(1500);
         flip.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -687,6 +698,8 @@ public class PokerActivity extends Activity {
 
         });
         flip.start();
+
+
         playSound(sounds[0]);
     }
 
