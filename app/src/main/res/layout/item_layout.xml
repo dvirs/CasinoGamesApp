@@ -2,21 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <com.example.admin.casinogames.UtilClass.roundedImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/icon"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:maxHeight="80dp"
-        android:maxWidth="80dp"
-        android:longClickable="false"
-        android:adjustViewBounds="true"
-        android:minHeight="80dp"
-        android:minWidth="80dp" />
 
+<LinearLayout
+    android:id="@+id/linearLayout"
+    android:layout_width="80dp"
+    android:layout_height="80dp">
+     <com.example.admin.casinogames.UtilClass.roundedImageView
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:id="@+id/imageView"
+    android:src="@drawable/icon"
+    android:maxHeight="80dp"
+    android:maxWidth="80dp"
+    android:adjustViewBounds="true"
+ />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="200dp"
+    android:layout_height="90dp"
+    android:orientation="vertical"
+    android:layout_alignParentTop="true"
+    android:layout_toRightOf="@+id/linearLayout"
+    android:layout_toEndOf="@+id/linearLayout">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,8 +31,9 @@
         android:text="Name"
         android:id="@+id/user_name"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,9 +41,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="email@gmail.com"
         android:id="@+id/user_email"
+        android:textSize="12dp"
         android:layout_below="@+id/user_name"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +52,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="10000"
         android:id="@+id/user_total"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout" />
+</LinearLayout>
 </RelativeLayout>
