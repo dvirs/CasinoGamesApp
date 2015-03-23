@@ -35,7 +35,7 @@ public class MyAdapter extends ArrayAdapter<User> {
         }
 
         User currentUser = allUsers.get(position);
-       // Log.e("Debug",currentUser.toString());
+        Log.e("Debug",currentUser.toString());
             try {
                 roundedImageView imageView = (roundedImageView) itemView.findViewById(R.id.imageView);
                 Log.e("Debug", currentUser.getUserImage().toString());

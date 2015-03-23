@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.utils;
 import com.example.admin.casinogames.com.example.admin.tasks.updateUserTotalMoneyTask;
 
 import org.apache.http.NameValuePair;
@@ -110,20 +111,8 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             }
         }).start();
 
+        utils.playSound(DiceGameActivity.this,R.raw.roll);
 
-
-
-        MediaPlayer mp = MediaPlayer.create(DiceGameActivity.this ,R.raw.roll);
-        try {
-            mp.prepare();
-
-        }catch (IllegalStateException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        mp.start();
         Thread cheack = new Thread(new Runnable() {
             @Override
             public void run() {

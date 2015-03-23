@@ -55,17 +55,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:background="@drawable/chips"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/high_score_btn"
-        android:layout_alignEnd="@+id/high_score_btn"
-        android:layout_alignBottom="@+id/userImage"
-        android:layout_alignLeft="@+id/high_score_btn"
-        android:layout_alignStart="@+id/high_score_btn" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +64,7 @@
         android:layout_weight="0.16"
         android:textColor="#fe010000"
         android:textSize="30dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/userImage"
         android:layout_toRightOf="@+id/settings_btn"
         android:layout_toEndOf="@+id/settings_btn" />
     <TextView
@@ -99,9 +88,10 @@
         android:text="@string/sign_in"
         android:id="@+id/sign_in_btn_lob"
         android:layout_alignTop="@+id/poker_btn"
-        android:layout_toRightOf="@+id/hi_txt"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView" />
+        android:layout_alignRight="@+id/high_score_btn"
+        android:layout_alignEnd="@+id/high_score_btn"
+        android:layout_alignLeft="@+id/high_score_btn"
+        android:layout_alignStart="@+id/high_score_btn" />
 
     <Button
         android:layout_width="wrap_content"
@@ -119,10 +109,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/userImage"
         android:src="@drawable/icon"
-        android:minHeight="70dp"
-        android:minWidth="70dp"
+        android:maxWidth="80dp"
+        android:maxHeight="80dp"
         android:nestedScrollingEnabled="false"
-        android:adjustViewBounds="false"
+        android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

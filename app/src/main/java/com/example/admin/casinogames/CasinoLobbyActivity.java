@@ -103,7 +103,7 @@ public class CasinoLobbyActivity extends Activity {
 
             userInfo = (ArrayList) bund.get("userinfo");
             userBM = utils.decodeTobase64(userInfo.get(5).toString());
-            userImage.setImageBitmap(userBM);
+            if(userBM != null) userImage.setImageBitmap(userBM);
             userNameTxt.setText("Hello, " + userInfo.get(1).toString());
             totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
 
@@ -137,7 +137,13 @@ public class CasinoLobbyActivity extends Activity {
 
             }
         });
-
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CasinoLobbyActivity.this,SettingActivity.class);
+                CasinoLobbyActivity.this.startActivity(i);
+            }
+        });
 
         highScoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override

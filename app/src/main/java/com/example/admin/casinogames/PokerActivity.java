@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
+import com.example.admin.casinogames.UtilClass.utils;
 import com.example.admin.casinogames.com.example.admin.tasks.updateUserTotalMoneyTask;
+import com.facebook.android.Util;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -109,7 +111,7 @@ public class PokerActivity extends Activity {
     private int userTotalMoney;
     private handStrength[] hands= new handStrength[2];
     private int betMulti = 1;
-    private MediaPlayer mp;
+
 
 
     @Override
@@ -183,7 +185,7 @@ public class PokerActivity extends Activity {
                 }
                 else {
                     counter++;
-                    if(counter>1) playSound(sounds[1]);
+                    if(counter>1) utils.playSound(PokerActivity.this,sounds[1]);
                     flag=true;
                     checkMove();
                 }
@@ -303,26 +305,7 @@ public class PokerActivity extends Activity {
 
     }
 
-    private void playSound(final int sound){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mp = MediaPlayer.create(PokerActivity.this ,sound);
-                try {
-                    mp.prepare();
 
-                }catch (IllegalStateException e) {
-                    e.printStackTrace();
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                mp.start();
-
-            }
-        }).start();
-
-    }
 
     private void newGame() {
         try{
@@ -412,13 +395,13 @@ public class PokerActivity extends Activity {
     private void dealerWon() {
         Toast.makeText(this, "Dealer WON!!! With " + hands[1], Toast.LENGTH_LONG).show();
         userWon = false;
-        playSound(sounds[3]);
+        utils.playSound(PokerActivity.this,sounds[3]);
     }
 
     private void userWon() {
         Toast.makeText(this,"User WON!!!With "+hands[0],Toast.LENGTH_LONG).show();
         userWon = true;
-        playSound(sounds[5]);
+        utils.playSound(PokerActivity.this,sounds[5]);
     }
 
     private void getHandStrenght(){
@@ -639,7 +622,7 @@ public class PokerActivity extends Activity {
     }
 
     private void dealer() {
-        playSound(sounds[4]);
+        utils.playSound(PokerActivity.this,sounds[4]);
         //user cards
         for(int i = 0; i < NUM_USER_CARDS; i++) {
             userCards.add(i, (FlipImageView) findViewById(viewUserIds[i]));
@@ -673,7 +656,7 @@ public class PokerActivity extends Activity {
 
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
-        flip.setDuration(1500);
+        flip.setDuration(2000);
         flip.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -700,7 +683,7 @@ public class PokerActivity extends Activity {
         flip.start();
 
 
-        playSound(sounds[0]);
+        utils.playSound(PokerActivity.this,sounds[0]);
     }
 
     private int randomCard() {
@@ -752,7 +735,7 @@ public class PokerActivity extends Activity {
         builder.setMessage("Are you sure you want to exit the Poker Game?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mp.release();
+                        utils.endSound(PokerActivity.this);
                         PokerActivity.this.finish();
                     }
                 })
@@ -769,19 +752,19 @@ public class PokerActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mp.release();
+        utils.endSound(PokerActivity.this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.release();
+        utils.endSound(PokerActivity.this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mp.release();
+        utils.endSound(PokerActivity.this);
     }
 }
 

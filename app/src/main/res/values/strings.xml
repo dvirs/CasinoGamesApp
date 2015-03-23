@@ -53,5 +53,7 @@
     <string name="title_activity_poker">PokerActivity</string>
     <string name="total_bet_title">Total bet:</string>
     <string name="demo_money">0$</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="setting_music">Enable Music</string>
 
 </resources>

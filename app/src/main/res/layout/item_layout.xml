@@ -5,15 +5,15 @@
 
 <LinearLayout
     android:id="@+id/linearLayout"
-    android:layout_width="80dp"
-    android:layout_height="80dp">
+    android:layout_width="70dp"
+    android:layout_height="70dp">
      <com.example.admin.casinogames.UtilClass.roundedImageView
-    android:layout_width="80dp"
-    android:layout_height="80dp"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
     android:id="@+id/imageView"
     android:src="@drawable/icon"
-    android:maxHeight="80dp"
-    android:maxWidth="80dp"
+    android:maxHeight="70dp"
+    android:maxWidth="70dp"
     android:adjustViewBounds="true"
  />
 </LinearLayout>
