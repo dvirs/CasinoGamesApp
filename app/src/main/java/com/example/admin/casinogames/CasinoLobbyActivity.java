@@ -79,7 +79,7 @@ public class CasinoLobbyActivity extends Activity {
 
     private void setComponentVisability(Bundle bund) {
         if(bund == null) {
-            userNameTxt.setText(R.string.welcom_user);
+            userNameTxt.setVisibility(View.INVISIBLE);
             totalMoneyTxt.setText("");
             cubes_btn.setVisibility(View.INVISIBLE);
             poker_btn.setVisibility(View.INVISIBLE);
@@ -100,7 +100,7 @@ public class CasinoLobbyActivity extends Activity {
             userImage.setVisibility(View.VISIBLE);
             signInBtn.setVisibility(View.INVISIBLE);
             signUpBtn.setVisibility(View.INVISIBLE);
-
+            userNameTxt.setVisibility(View.VISIBLE);
             userInfo = (ArrayList) bund.get("userinfo");
             userBM = utils.decodeTobase64(userInfo.get(5).toString());
             if(userBM != null) userImage.setImageBitmap(userBM);

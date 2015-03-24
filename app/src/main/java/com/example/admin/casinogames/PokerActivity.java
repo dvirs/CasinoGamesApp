@@ -656,7 +656,7 @@ public class PokerActivity extends Activity {
 
         Log.e("debug", "card_index = " + card_index + " allCards[i] = " + allCards.get(card_index));
         flip.setTarget(imageView);
-        flip.setDuration(2000);
+        flip.setDuration(1500);
         flip.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

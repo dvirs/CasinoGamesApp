@@ -64,7 +64,7 @@
         android:layout_weight="0.16"
         android:textColor="#fe010000"
         android:textSize="30dp"
-        android:layout_alignTop="@+id/userImage"
+        android:layout_alignTop="@+id/liner"
         android:layout_toRightOf="@+id/settings_btn"
         android:layout_toEndOf="@+id/settings_btn" />
     <TextView
@@ -104,18 +104,17 @@
         android:layout_alignRight="@+id/sign_in_btn_lob"
         android:layout_alignEnd="@+id/sign_in_btn_lob" />
 
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/liner">
     <com.example.admin.casinogames.UtilClass.roundedImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/userImage"
         android:src="@drawable/icon"
-        android:maxWidth="80dp"
-        android:maxHeight="80dp"
-        android:nestedScrollingEnabled="false"
-        android:adjustViewBounds="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
+        android:adjustViewBounds="true" />
+    </LinearLayout>
 
 </RelativeLayout>

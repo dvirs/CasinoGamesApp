@@ -69,7 +69,7 @@ public class RegisterActivity extends Activity {
                 firstPass = ""+password.getText().toString();
                 secondPass = ""+rePassword.getText().toString();
 
-              //  if(validations(emailStr, firstPass, secondPass)){
+                if(validations(emailStr, firstPass, secondPass)){
                     ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
                     userInfoArray.add(new BasicNameValuePair("username",user));
                     userInfoArray.add(new BasicNameValuePair("email",emailStr));
@@ -78,9 +78,9 @@ public class RegisterActivity extends Activity {
                     //Create a new Insert User Task
                     new InsertUserTask(userInfoArray,activity).execute(new apiConnectorDB());
 
-             //   } else {
-             //       wrongInputTxt.setText(R.string.wrong_reg);
-             //   }
+                } else {
+                    wrongInputTxt.setText(R.string.wrong_reg);
+                }
             }
         });
 
@@ -100,12 +100,14 @@ public class RegisterActivity extends Activity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //get the returned data
-        Bundle extras = data.getExtras();
-        //get the cropped bitmap
-        thePic = extras.getParcelable("data");
-        imageData = utils.encodeTobase64(thePic);
-        picView.setImageBitmap(thePic);
+        if(data != null) {
+            //get the returned data
+            Bundle extras = data.getExtras();
+            //get the cropped bitmap
+            thePic = extras.getParcelable("data");
+            imageData = utils.encodeTobase64(thePic);
+            picView.setImageBitmap(thePic);
+        }
     }
 
 
