@@ -19,10 +19,8 @@ import java.util.ArrayList;
 
 
 public class LoginActivity extends Activity {
-    private static final String DEBUG = "Debug" ;
 
-    private String userName;
-    private String password;
+    private String userName, password;
     private Button signIn_btn;
     private EditText etUsername,etPassword;
     private TextView wrongInput;

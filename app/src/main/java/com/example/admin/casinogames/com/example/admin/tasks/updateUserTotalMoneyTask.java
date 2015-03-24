@@ -3,12 +3,9 @@ package com.example.admin.casinogames.com.example.admin.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.admin.casinogames.RegisterActivity;
 import com.example.admin.casinogames.UtilClass.apiConnectorDB;
 
 import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

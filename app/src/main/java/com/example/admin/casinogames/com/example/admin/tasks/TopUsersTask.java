@@ -40,7 +40,6 @@ public class TopUsersTask extends AsyncTask<apiConnectorDB,Long,ArrayList> {
                 }
             }
         }
-
         return topUsers;
     }
 

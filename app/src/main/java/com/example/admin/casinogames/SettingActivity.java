@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.example.admin.casinogames.R;
-
 
 public class SettingActivity extends Activity {
 
@@ -28,10 +26,8 @@ public class SettingActivity extends Activity {
         prefs= this.getSharedPreferences(PREFS_NAME, 0);
         prefsWriter = prefs.edit();
 
-
         ((CheckBox)this.findViewById(R.id.config_bgmusic_enable)).setOnClickListener(bgMusicListener);
         ((CheckBox)this.findViewById(R.id.config_bgmusic_enable)).setChecked(getBgMusicEnabled(this));
-
 
     }
 

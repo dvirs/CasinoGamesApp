@@ -11,7 +11,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +25,6 @@ public class apiConnectorDB {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new UrlEncodedFormEntity(user));
             httpClient.execute(httpPost);
-
 
             Log.e("Debug", "connected User user looged in!");
         } catch (Exception e) {
@@ -66,7 +64,6 @@ public class apiConnectorDB {
             Log.e("Debug","Didnt connected! " + e.toString());
             return false;
         }
-
         return true;
     }
 
@@ -91,7 +88,6 @@ public class apiConnectorDB {
         if(httpEntity != null){
             try{
                 String entityResponse = EntityUtils.toString(httpEntity);
-           //     Log.e("Debug","httpEntity is not empty: \n"+entityResponse);
                 jsonArray = new JSONArray(entityResponse);
             }catch (Exception e){
                 e.printStackTrace();
@@ -100,7 +96,6 @@ public class apiConnectorDB {
             Log.e("Debug","httpEntity is EMPTY");
         }
         return jsonArray;
-
     }
 
     public JSONArray getTopUsers(){

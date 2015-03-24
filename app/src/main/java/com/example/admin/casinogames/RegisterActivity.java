@@ -2,18 +2,13 @@ package com.example.admin.casinogames;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,24 +25,23 @@ import com.example.admin.casinogames.com.example.admin.tasks.InsertUserTask;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.logging.StreamHandler;
 
 public class RegisterActivity extends Activity {
     private static final String REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
-    private final int MIN_LEN = 6;
+
     private final int CAMERA_CAPTURE = 1;
 
     private EditText password,email,rePassword,userName;
     private TextView userNameTxt, passwordTxt, rePasswordTxt, wrongInputTxt, emailTxt;
-    private Button signUp,makePhoto ;
     private ImageView picView;
-    private String user,firstPass,secondPass,emailStr;
-    private RegisterActivity activity;
-    private String imageData;
-    private Bitmap thePic;
+    private Button signUp, makePhoto ;
 
+    private RegisterActivity activity;
+    private String user, firstPass, secondPass, emailStr;
+    private String imageData;
+
+    private Bitmap thePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +230,4 @@ public class RegisterActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

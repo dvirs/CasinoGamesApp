@@ -43,9 +43,6 @@ public class MyAdapter extends ArrayAdapter<User> {
                 if (imageBM != null) imageView.setImageBitmap(imageBM);
             }catch (Exception e){}
 
-
-
-
         TextView userName = (TextView) itemView.findViewById(R.id.user_name);
         userName.setText(currentUser.getName());
 
@@ -56,6 +53,5 @@ public class MyAdapter extends ArrayAdapter<User> {
         total.setText(""+currentUser.getTotalMoney() + "$");
 
         return itemView;
-
     }
 }

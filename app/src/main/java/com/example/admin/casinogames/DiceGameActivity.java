@@ -10,7 +10,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,7 +30,6 @@ import com.example.admin.casinogames.com.example.admin.tasks.updateUserTotalMone
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,37 +37,47 @@ import static java.lang.Thread.sleep;
 
 
 public class DiceGameActivity extends Activity implements SensorEventListener {
+
     private static final int UPDATE_DELAY = 50;
     private static final int SHAKE_THRESHOLD = 800;
+    private final int USER_ID = 0;
+    private final int MONEY = 4;
+    private final int NUM_OF_SIDES = 6;
     private final int rollAnimations = 50;
     private final int delayTime = 15;
-    private DiceGameActivity thisActivity = this;
+    private final int FIRST_IMAGE = 0;
+    private final int SECOND_IMAGE = 1;
+    private final int TIME_DELTA = 10000;
+    private final int SLEEP = 2000;
+
     private Sensor acceleromter;
     private SensorManager sm;
-    private ImageView dice1;
-    private ImageView dice2;
+    private ImageView dice1, dice2;
     private TextView betMoney;
     private SeekBar seekBar;
     private Spinner spinner;
     private Button placeBetBtn;
     private Bundle bundle;
     private ArrayList userInfo;
+    private Resources res;
+
+    private final int[] diceImages = new int[]{R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five, R.drawable.six};
+    private Drawable dice[] = new Drawable[NUM_OF_SIDES];
+    private Random randomGen = new Random();
+    private Handler animationHandler;
+    private String sumChoise;
 
     private long lastUpdate = -1;
     private float x, y, z;
     private float last_x, last_y, last_z;
-    private boolean paused = false;
-    private Resources res;
-    private final int[] diceImages = new int[]{R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five, R.drawable.six};
-    private Drawable dice[] = new Drawable[6];
-    private final Random randomGen = new Random();
+
     private int diceSum;
-    private int roll[] = new int[]{6, 6};
-    private Handler animationHandler;
+    private int roll[] = new int[]{NUM_OF_SIDES, NUM_OF_SIDES};
     private int count = 1;
     private int bet;
-    private String sumChoise;
+
     private boolean won = false;
+    private boolean paused = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +91,13 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         setViewOfFields();
         setButtonClickable();
         res = getResources();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < NUM_OF_SIDES; i++) {
             dice[i] = res.getDrawable(diceImages[i]);
         }
         animationHandler = new Handler() {
             public void handleMessage(Message msg) {
-                dice1.setImageDrawable(dice[roll[0]]);
-                dice2.setImageDrawable(dice[roll[1]]);
+                dice1.setImageDrawable(dice[roll[FIRST_IMAGE]]);
+                dice2.setImageDrawable(dice[roll[SECOND_IMAGE]]);
             }
         };
 
@@ -118,7 +126,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
             public void run() {
                 Looper.prepare();
                 try{
-                    sleep(2000);
+                    sleep(SLEEP);
 
                 }catch (InterruptedException e) {
                     e.printStackTrace();
@@ -129,11 +137,6 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         });
         cheack.start();
 
-
-
-
-
-
     }
     private void checkIfUserWon(){
         int newTotalMoney ;
@@ -142,15 +145,15 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
         if(diceSum == Integer.parseInt(sumChoise)){
             Log.e("debug","inside the if ");
             won = true;
-            newTotalMoney = (int) userInfo.get(4) +  bet * 2;
+            newTotalMoney = (int) userInfo.get(MONEY) +  bet * 2;
         }else{
             won = false;
-            newTotalMoney = (int) userInfo.get(4) -  bet ;
+            newTotalMoney = (int) userInfo.get(MONEY) -  bet ;
 
         }
-        userInfo.set(4,newTotalMoney);
+        userInfo.set(MONEY, newTotalMoney);
         ArrayList<NameValuePair> userInfoArray = new ArrayList<NameValuePair>();
-        userInfoArray.add(new BasicNameValuePair("id", userInfo.get(0).toString()));
+        userInfoArray.add(new BasicNameValuePair("id", userInfo.get(USER_ID).toString()));
         userInfoArray.add(new BasicNameValuePair("totalmoney",""+newTotalMoney));
 
         seekBar.setMax(newTotalMoney);
@@ -176,9 +179,9 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
     }
 
     private void doRoll() {
-        roll[0] = randomGen.nextInt(6);
-        roll[1] = randomGen.nextInt(6);
-        diceSum = roll[0] + roll[1] + 2; // 2 is added because the values of the rolls start with 0 not 1
+        roll[FIRST_IMAGE] = randomGen.nextInt(NUM_OF_SIDES);
+        roll[SECOND_IMAGE] = randomGen.nextInt(NUM_OF_SIDES);
+        diceSum = roll[FIRST_IMAGE] + roll[SECOND_IMAGE] + 2; // 2 is added because the values of the rolls start with 0 not 1
         synchronized (getLayoutInflater()) {
             animationHandler.sendEmptyMessage(0);
         }
@@ -207,9 +210,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
                 }
                 else {
                     Toast.makeText(DiceGameActivity.this,R.string.bet_error,Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
 
@@ -264,7 +265,7 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //Log.e("ddddddddddd","the pphone moved");
+
         Sensor mySensor = event.sensor;
         long curTime = System.currentTimeMillis();
             if ((curTime - lastUpdate) > UPDATE_DELAY) {
@@ -273,18 +274,16 @@ public class DiceGameActivity extends Activity implements SensorEventListener {
                 x = event.values[SensorManager.DATA_X];
                 y = event.values[SensorManager.DATA_Y];
                 z = event.values[SensorManager.DATA_Z];
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * TIME_DELTA;
 
                 if (speed > SHAKE_THRESHOLD && count == 0) { //the screen was shaked and only one roll
                     rollDice();
-                    count=1;
+                    count = 1;
                 }
                 last_x = x;
                 last_y = y;
                 last_z = z;
             }
-
-
     }
 
     @Override

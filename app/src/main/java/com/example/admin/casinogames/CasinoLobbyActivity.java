@@ -35,6 +35,11 @@ import java.util.ArrayList;
 
 public class CasinoLobbyActivity extends Activity {
 
+    private final int USER_ID = 0;
+    private final int USER_NAME = 1;
+    private final int MONEY = 4;
+    private final int IMAGE = 5;
+
     private Bundle bund;
     private TextView userNameTxt, totalMoneyTxt;
     private ImageButton cubes_btn, poker_btn;
@@ -45,6 +50,7 @@ public class CasinoLobbyActivity extends Activity {
     private Bundle saveState;
     private Bitmap userBM;
     private roundedImageView userImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,10 +108,10 @@ public class CasinoLobbyActivity extends Activity {
             signUpBtn.setVisibility(View.INVISIBLE);
             userNameTxt.setVisibility(View.VISIBLE);
             userInfo = (ArrayList) bund.get("userinfo");
-            userBM = utils.decodeTobase64(userInfo.get(5).toString());
+            userBM = utils.decodeTobase64(userInfo.get(IMAGE).toString());
             if(userBM != null) userImage.setImageBitmap(userBM);
-            userNameTxt.setText("Hello, " + userInfo.get(1).toString());
-            totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
+            userNameTxt.setText("Hello, " + userInfo.get(USER_NAME).toString());
+            totalMoneyTxt.setText(userInfo.get(MONEY).toString() + "$");
 
         }
     }
@@ -250,21 +256,21 @@ public class CasinoLobbyActivity extends Activity {
 
     private void updateUser() {
         if(userInfo != null) {
-            new getUserTask((int) userInfo.get(0), this).execute(new apiConnectorDB());
+            new getUserTask((int) userInfo.get(USER_ID), this).execute(new apiConnectorDB());
         }
     }
 
     public void updateUserComponent(ArrayList userInfo){
         this.userInfo = userInfo;
         Log.e("de", "Found User!!! But didnt write");
-        totalMoneyTxt.setText(userInfo.get(4).toString() + "$");
+        totalMoneyTxt.setText(userInfo.get(MONEY).toString() + "$");
 
     }
 
     private void logout() {
         setComponentVisability(null);
         ArrayList<NameValuePair> user = new ArrayList<NameValuePair>();
-        user.add(new BasicNameValuePair("id", "" + userInfo.get(0)));
+        user.add(new BasicNameValuePair("id", "" + userInfo.get(USER_ID)));
         user.add(new BasicNameValuePair("state", "" + null));
         new logoutTask(user).execute(new apiConnectorDB());
         userInfo = null;
